@@ -1,0 +1,2354 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ABSTRACTHON · Abstráete y crea el futuro</title>
+    <meta
+      name="description"
+      content="Abstracthon: la hackathon que desafía los límites de lo convencional. Bolivia 2026."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              deep: "#060E26",
+              surf: "#124673",
+              neon: "#52F2F2",
+              gold: "#F2C84B",
+              red: "#D93030",
+            },
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+              body: ["Outfit", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --deep: #060e26;
+        --surf: #124673;
+        --neon: #52f2f2;
+        --gold: #f2c84b;
+        --red: #d93030;
+        --line: rgba(130, 190, 230, 0.16);
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 6rem;
+      }
+      body {
+        background: var(--deep);
+        color: #dbe7f5;
+        font-family: "Outfit", sans-serif;
+        overflow-x: hidden;
+      }
+      h1,
+      h2,
+      h3,
+      .font-display {
+        font-family: "Space Grotesk", sans-serif;
+      }
+      :focus-visible {
+        outline: 2px solid var(--neon);
+        outline-offset: 3px;
+      }
+      ::selection {
+        background: var(--neon);
+        color: var(--deep);
+      }
+      [data-lucide] {
+        width: 1.25rem;
+        height: 1.25rem;
+        stroke-width: 1.6;
+      }
+      .glass {
+        background: rgba(10, 30, 62, 0.55);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+      .hairline {
+        border: 1px solid var(--line);
+      }
+
+      /* progreso + cursor */
+      #prog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 100%;
+        transform-origin: 0 50%;
+        transform: scaleX(0);
+        background: linear-gradient(90deg, var(--neon), var(--gold));
+        z-index: 70;
+      }
+      .cur {
+        position: fixed;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        z-index: 100;
+        display: none;
+      }
+      @media (hover: hover) and (pointer: fine) {
+        .cur {
+          display: block;
+        }
+      }
+      .cur-ring {
+        width: 38px;
+        height: 38px;
+        margin: -19px 0 0 -19px;
+        border: 1.5px solid var(--neon);
+        border-radius: 50%;
+        transition:
+          width 0.25s,
+          height 0.25s,
+          margin 0.25s,
+          background 0.25s;
+      }
+      .cur-ring.big {
+        width: 68px;
+        height: 68px;
+        margin: -34px 0 0 -34px;
+        background: rgba(82, 242, 242, 0.1);
+      }
+      .cur-dot {
+        width: 6px;
+        height: 6px;
+        margin: -3px 0 0 -3px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      /* botones */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        border-radius: 0.5rem;
+        padding: 0.9rem 1.6rem;
+        font-weight: 500;
+        transition: all 0.25s;
+      }
+      .btn-primary {
+        background: var(--neon);
+        color: var(--deep);
+      }
+      .btn-primary:hover {
+        box-shadow: 0 0 30px rgba(82, 242, 242, 0.6);
+        transform: translateY(-2px);
+      }
+      .btn-ghost {
+        border: 1px solid rgba(160, 210, 240, 0.35);
+        color: #e6f1ff;
+      }
+      .btn-ghost:hover {
+        border-color: var(--neon);
+        color: var(--neon);
+        background: rgba(82, 242, 242, 0.06);
+      }
+      @property --a {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+      @keyframes spin {
+        to {
+          --a: 360deg;
+        }
+      }
+      .cta-border {
+        border-radius: 0.5rem;
+        padding: 1.5px;
+        background: conic-gradient(
+          from var(--a),
+          var(--neon),
+          transparent 35%,
+          var(--gold) 60%,
+          transparent 80%,
+          var(--neon)
+        );
+        animation: spin 5s linear infinite;
+      }
+      .cta-border span {
+        display: block;
+        border-radius: 0.45rem;
+        background: var(--deep);
+        padding: 0.45rem 1.15rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--neon);
+      }
+      .nav-link {
+        position: relative;
+        transition: color 0.2s;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        height: 1px;
+        width: 0;
+        background: var(--neon);
+        transition: width 0.25s;
+      }
+      .nav-link:hover {
+        color: #fff;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 6px rgba(82, 242, 242, 0.35);
+        }
+        50% {
+          box-shadow: 0 0 18px rgba(82, 242, 242, 0.85);
+        }
+      }
+      .live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 9999px;
+        background: var(--neon);
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      /* HERO */
+      .grid-bg {
+        background-image:
+          linear-gradient(var(--line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--line) 1px, transparent 1px);
+        background-size: 64px 64px;
+        -webkit-mask-image: radial-gradient(
+          70% 70% at 50% 40%,
+          #000,
+          transparent
+        );
+        mask-image: radial-gradient(70% 70% at 50% 40%, #000, transparent);
+        opacity: 0.45;
+      }
+      .line {
+        display: block;
+        overflow: hidden;
+        padding: 0.04em 0 0.08em;
+      }
+      .ch {
+        display: inline-block;
+        transform: translateY(115%) rotate(7deg);
+        animation: chIn 0.95s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        animation-delay: calc(var(--i) * 42ms + 0.25s);
+        cursor: default;
+      }
+      .sp {
+        display: inline-block;
+        width: 0.26em;
+      }
+      @keyframes chIn {
+        to {
+          transform: none;
+        }
+      }
+      .h-solid .ch {
+        color: #fff;
+        text-shadow: 0 0 40px rgba(82, 242, 242, 0.35);
+      }
+      .h-out .ch {
+        color: transparent;
+        -webkit-text-stroke: 2px var(--neon);
+        filter: drop-shadow(0 0 14px rgba(82, 242, 242, 0.45));
+      }
+      .fade-up {
+        opacity: 0;
+        animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+      }
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      #gl {
+        -webkit-mask-image: radial-gradient(
+          circle closest-side,
+          #000 86%,
+          transparent 100%
+        );
+        mask-image: radial-gradient(
+          circle closest-side,
+          #000 86%,
+          transparent 100%
+        );
+      }
+      #gl canvas {
+        display: block;
+        width: 100% !important;
+        height: 100% !important;
+      }
+      .ring-cta {
+        position: absolute;
+        width: 132px;
+        height: 132px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: var(--neon);
+        background: rgba(6, 14, 38, 0.75);
+        backdrop-filter: blur(8px);
+        border: 1px solid var(--line);
+        transition: transform 0.2s ease-out;
+        z-index: 5;
+      }
+      .ring-cta svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        animation: rot 18s linear infinite;
+      }
+      .ring-cta .center {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--neon);
+        color: var(--deep);
+        display: grid;
+        place-items: center;
+        transition: transform 0.3s;
+      }
+      .ring-cta:hover .center {
+        transform: scale(1.2) rotate(45deg);
+      }
+      @keyframes rot {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .scroll-cue {
+        width: 22px;
+        height: 36px;
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
+        border-radius: 12px;
+        position: relative;
+      }
+      .scroll-cue::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 6px;
+        width: 3px;
+        height: 7px;
+        margin-left: -1.5px;
+        border-radius: 2px;
+        background: var(--neon);
+        animation: cue 1.8s infinite;
+      }
+      @keyframes cue {
+        0% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        80%,
+        100% {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+      }
+
+      /* decoraciones abstractas */
+      .deco {
+        position: absolute;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.6;
+        will-change: transform;
+      }
+      .deco .in {
+        animation: floaty var(--d, 10s) ease-in-out infinite;
+      }
+      .deco svg {
+        width: 100%;
+        height: auto;
+        display: block;
+        overflow: visible;
+      }
+      @keyframes floaty {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0);
+        }
+        50% {
+          transform: translateY(-18px) rotate(14deg);
+        }
+      }
+
+      /* bandas diagonales */
+      .bands {
+        position: relative;
+        height: clamp(170px, 24vw, 290px);
+        overflow: hidden;
+        margin: 3rem 0;
+      }
+      .band {
+        position: absolute;
+        left: -10%;
+        width: 120%;
+        padding: 0.55rem 0;
+        overflow: hidden;
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        text-transform: uppercase;
+        white-space: nowrap;
+        font-size: clamp(1.9rem, 5.4vw, 4.4rem);
+        line-height: 1.1;
+      }
+      .b1 {
+        top: 22%;
+        transform: rotate(-2.4deg);
+        background: var(--neon);
+        color: var(--deep);
+        z-index: 2;
+        box-shadow: 0 0 60px -10px rgba(82, 242, 242, 0.6);
+      }
+      .b2 {
+        top: 46%;
+        transform: rotate(1.8deg);
+        background: var(--surf);
+        color: #fff;
+        z-index: 1;
+        border-block: 1px solid rgba(82, 242, 242, 0.4);
+      }
+      .track {
+        display: flex;
+        width: max-content;
+        animation: marquee 38s linear infinite;
+      }
+      .b2 .track {
+        animation-direction: reverse;
+        animation-duration: 46s;
+      }
+      .w {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 1.4rem;
+      }
+      .w::after {
+        content: "";
+        width: 0.38em;
+        height: 0.38em;
+        margin-left: 1.4rem;
+        background: currentColor;
+        clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+      }
+      .w:nth-child(even) {
+        color: transparent;
+        -webkit-text-stroke: 1.5px currentColor;
+      }
+      .b1 .w:nth-child(even) {
+        -webkit-text-stroke-color: var(--deep);
+      }
+      .b2 .w:nth-child(even) {
+        -webkit-text-stroke-color: var(--neon);
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* countdown */
+      .cd-cell {
+        padding: 1.4rem 0;
+        text-align: center;
+      }
+      .cd-cell + .cd-cell {
+        border-left: 1px solid var(--line);
+      }
+      .cd-num {
+        font-family: "Space Grotesk";
+        font-weight: 600;
+        font-size: clamp(2.6rem, 7vw, 4.6rem);
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+        color: #fff;
+        text-shadow: 0 0 24px rgba(82, 242, 242, 0.45);
+      }
+      .flip {
+        animation: flip 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      @keyframes flip {
+        from {
+          transform: translateY(-35%);
+          opacity: 0.15;
+        }
+        to {
+          transform: none;
+          opacity: 1;
+        }
+      }
+
+      /* texto que se ilumina al hacer scroll */
+      .rw .wd {
+        opacity: 0.22;
+        transition:
+          opacity 0.35s,
+          color 0.35s;
+      }
+      .rw .wd.on {
+        opacity: 1;
+        color: #fff;
+      }
+
+      /* pilares */
+      .pillar {
+        position: relative;
+        display: grid;
+        grid-template-columns: 3rem 1fr;
+        gap: 1.25rem;
+        padding: 1.6rem 0;
+        border-top: 1px solid var(--line);
+      }
+      .pillar:last-child {
+        border-bottom: 1px solid var(--line);
+      }
+      .pillar::before {
+        content: "";
+        position: absolute;
+        inset: 0 -1rem;
+        border-radius: 0.75rem;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        background: radial-gradient(
+          320px circle at var(--mx, 50%) var(--my, 50%),
+          rgba(82, 242, 242, 0.1),
+          transparent 60%
+        );
+      }
+      .pillar:hover::before {
+        opacity: 1;
+      }
+      .pillar .ico {
+        width: 3rem;
+        height: 3rem;
+        display: grid;
+        place-items: center;
+        border-radius: 0.6rem;
+        border: 1px solid var(--line);
+        color: var(--c);
+        background: rgba(255, 255, 255, 0.02);
+        transition: all 0.3s;
+      }
+      .pillar:hover .ico {
+        border-color: var(--c);
+        box-shadow: 0 0 18px -4px var(--c);
+        transform: rotate(-6deg) scale(1.06);
+      }
+
+      /* galería */
+      .bento {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 170px;
+        grid-auto-flow: dense;
+        gap: 0.75rem;
+      }
+      @media (min-width: 768px) {
+        .bento {
+          grid-template-columns: repeat(4, 1fr);
+          grid-auto-rows: 200px;
+        }
+      }
+      .g {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.9rem;
+        border: 1px solid var(--line);
+        cursor: zoom-in;
+        background: #0a1a38;
+      }
+      .g.a,
+      .g.e {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+      .g.c,
+      .g.g {
+        grid-row: span 2;
+      }
+      .g .ph {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: rgba(82, 242, 242, 0.5);
+        background:
+          repeating-linear-gradient(
+            135deg,
+            rgba(82, 242, 242, 0.06) 0 2px,
+            transparent 2px 18px
+          ),
+          linear-gradient(140deg, var(--surf), var(--deep) 75%);
+      }
+      .g:nth-child(3n) .ph {
+        background:
+          repeating-linear-gradient(
+            45deg,
+            rgba(242, 200, 75, 0.07) 0 2px,
+            transparent 2px 16px
+          ),
+          linear-gradient(140deg, #0c2a4f, var(--deep) 80%);
+        color: rgba(242, 200, 75, 0.55);
+      }
+      .g:nth-child(4n) .ph {
+        background:
+          radial-gradient(
+            circle at 70% 30%,
+            rgba(217, 48, 48, 0.25),
+            transparent 55%
+          ),
+          linear-gradient(140deg, var(--surf), var(--deep));
+        color: rgba(255, 120, 120, 0.55);
+      }
+      .g .ph i {
+        width: 2.4rem;
+        height: 2.4rem;
+      }
+      .g img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition:
+          transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+          filter 0.5s;
+        filter: saturate(0.85) contrast(1.05);
+      }
+      .g:hover img {
+        transform: scale(1.07);
+        filter: saturate(1.1);
+      }
+      .g figcaption {
+        position: absolute;
+        inset: auto 0 0 0;
+        padding: 2.2rem 1rem 0.9rem;
+        font-size: 0.9rem;
+        color: #fff;
+        background: linear-gradient(transparent, rgba(6, 14, 38, 0.92));
+        transform: translateY(100%);
+        transition: transform 0.4s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .g:hover figcaption {
+        transform: none;
+      }
+      #lb {
+        position: fixed;
+        inset: 0;
+        z-index: 95;
+        display: none;
+        place-items: center;
+        background: rgba(3, 8, 22, 0.92);
+        backdrop-filter: blur(8px);
+        padding: 1.5rem;
+      }
+      #lb.open {
+        display: grid;
+      }
+      #lb img {
+        max-width: min(1100px, 100%);
+        max-height: 80vh;
+        border-radius: 0.75rem;
+        border: 1px solid var(--line);
+      }
+
+      /* sedes */
+      .sede-btn {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.1rem 1.2rem;
+        border-radius: 0.6rem;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.02);
+        transition: all 0.25s;
+      }
+      .sede-btn:hover {
+        border-color: rgba(82, 242, 242, 0.45);
+      }
+      .sede-btn[aria-selected="true"] {
+        border-color: var(--neon);
+        background: rgba(82, 242, 242, 0.07);
+        box-shadow: inset 3px 0 0 var(--neon);
+      }
+      .sede-btn .tick {
+        margin-left: auto;
+        opacity: 0;
+        color: var(--neon);
+        transition: opacity 0.25s;
+      }
+      .sede-btn[aria-selected="true"] .tick {
+        opacity: 1;
+      }
+      .map-frame {
+        position: relative;
+        border: 1px solid rgba(82, 242, 242, 0.35);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        background: #0a1a38;
+        box-shadow: 0 0 60px -20px rgba(82, 242, 242, 0.5);
+      }
+      .map-frame iframe {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        filter: invert(92%) hue-rotate(180deg) saturate(0.75) contrast(0.92);
+        transition: opacity 0.35s;
+      }
+      .map-frame.loading iframe {
+        opacity: 0;
+      }
+      .corner {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--gold);
+        pointer-events: none;
+        z-index: 2;
+      }
+      .c1 {
+        top: 10px;
+        left: 10px;
+        border-right: 0;
+        border-bottom: 0;
+      }
+      .c2 {
+        top: 10px;
+        right: 10px;
+        border-left: 0;
+        border-bottom: 0;
+      }
+      .c3 {
+        bottom: 10px;
+        left: 10px;
+        border-right: 0;
+        border-top: 0;
+      }
+      .c4 {
+        bottom: 10px;
+        right: 10px;
+        border-left: 0;
+        border-top: 0;
+      }
+
+      /* aliados */
+      .marquee {
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 12%,
+          #000 88%,
+          transparent
+        );
+        mask-image: linear-gradient(
+          90deg,
+          transparent,
+          #000 12%,
+          #000 88%,
+          transparent
+        );
+      }
+      .marquee-track {
+        display: flex;
+        width: max-content;
+        animation: marquee 30s linear infinite;
+      }
+      .marquee:hover .marquee-track {
+        animation-play-state: paused;
+      }
+      .logo-item {
+        height: 5.5rem;
+        width: auto;
+        max-width: none;
+        margin: 0 3.5rem;
+        filter: grayscale(1) brightness(0) invert(1);
+        opacity: 0.55;
+        transition:
+          filter 0.3s,
+          opacity 0.3s,
+          transform 0.3s;
+      }
+      .logo-item:hover {
+        filter: none;
+        opacity: 1;
+        transform: scale(1.08);
+      }
+
+      @media (max-width: 640px) {
+        .logo-item {
+          height: 4rem;
+          margin: 0 2.2rem;
+        }
+      }
+
+      /* footer gigante */
+      .mega {
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        line-height: 0.85;
+        font-size: clamp(2.6rem, 12.4vw, 13rem);
+        text-align: center;
+        color: transparent;
+        -webkit-text-stroke: 1.2px rgba(130, 190, 230, 0.35);
+        background: linear-gradient(var(--neon), var(--neon)) no-repeat 0
+          100%/100% 0;
+        -webkit-background-clip: text;
+        background-clip: text;
+        transition:
+          background-size 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+          -webkit-text-stroke-color 0.6s;
+      }
+      .mega:hover {
+        background-size: 100% 100%;
+        -webkit-text-stroke-color: var(--neon);
+      }
+
+      /* reveals */
+      .reveal {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+          transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+        transition-delay: var(--dl, 0s);
+      }
+      .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+      .wipe {
+        clip-path: inset(0 100% 0 0);
+        transition: clip-path 1.1s cubic-bezier(0.7, 0, 0.2, 1);
+      }
+      .wipe.in {
+        clip-path: inset(0 -5% 0 0);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition: none !important;
+        }
+        .track,
+        .marquee-track {
+          animation: none;
+        }
+        html {
+          scroll-behavior: auto;
+        }
+        .reveal,
+        .wipe,
+        .ch,
+        .fade-up {
+          opacity: 1;
+          transform: none;
+          clip-path: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="prog"></div>
+    <div class="cur" id="curRing"><div class="cur-ring"></div></div>
+    <div class="cur" id="curDot"><div class="cur-dot"></div></div>
+
+    <!-- NAVBAR -->
+    <header class="fixed top-0 inset-x-0 z-50 glass border-b border-white/10">
+      <nav
+        class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4"
+        aria-label="Principal"
+      >
+        <a
+          href="#inicio"
+          class="flex items-center gap-3 shrink-0"
+          aria-label="Abstracthon, inicio"
+        >
+          <img
+            src="img/abstracthon-logo.png"
+            alt="Abstracthon"
+            class="h-12 sm:h-14 w-auto"
+            onerror="
+              this.replaceWith(
+                Object.assign(document.createElement('b'), {
+                  className: 'font-display text-neon',
+                  textContent: 'ABSTRACTHON',
+                }),
+              )
+            "
+          />
+          <span class="hidden sm:block w-px h-9 bg-white/15"></span>
+          <img
+            src="img/comunidad.png"
+            alt="Comunidad"
+            class="h-10 sm:h-12 w-auto"
+            onerror="this.style.display = 'none'"
+          />
+          <span
+            class="hidden xl:block text-[11px] leading-tight text-slate-400 max-w-[170px]"
+            >Microsoft Learn Student Ambassadors - University Community</span
+          >
+        </a>
+        <ul class="hidden lg:flex items-center gap-8 text-sm text-slate-300">
+          <li><a class="nav-link" href="#sobre">Sobre el evento</a></li>
+          <li><a class="nav-link" href="#galeria">Galería</a></li>
+          <li><a class="nav-link" href="#sedes">Sedes</a></li>
+          <li><a class="nav-link" href="#countdown">Countdown</a></li>
+          <li><a class="nav-link" href="#comunidad">Comunidad</a></li>
+        </ul>
+        <div class="flex items-center gap-3">
+          <a href="#sedes" class="cta-border"><span>Inscribirse</span></a>
+          <button
+            id="menuBtn"
+            class="lg:hidden w-10 h-10 grid place-items-center text-neon"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+          >
+            <i data-lucide="menu"></i>
+          </button>
+        </div>
+      </nav>
+      <div
+        id="mobileMenu"
+        class="hidden lg:hidden px-6 pb-5 pt-2 border-t border-white/10"
+      >
+        <ul class="flex flex-col gap-4 text-slate-200">
+          <li><a href="#sobre">Sobre el evento</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#sedes">Sedes</a></li>
+          <li><a href="#countdown">Countdown</a></li>
+          <li><a href="#comunidad">Comunidad</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section
+        id="inicio"
+        class="relative min-h-screen flex flex-col justify-center overflow-hidden pt-32 pb-10"
+      >
+        <canvas
+          id="bg"
+          class="absolute inset-0 w-full h-full"
+          aria-hidden="true"
+        ></canvas>
+        <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+        <div
+          class="absolute inset-0 pointer-events-none"
+          style="
+            background:
+              radial-gradient(
+                55% 55% at 20% 40%,
+                rgba(18, 70, 115, 0.55),
+                transparent 70%
+              ),
+              radial-gradient(
+                40% 40% at 85% 45%,
+                rgba(82, 242, 242, 0.1),
+                transparent 70%
+              ),
+              radial-gradient(
+                30% 30% at 98% 0%,
+                rgba(217, 48, 48, 0.12),
+                transparent 70%
+              );
+          "
+        ></div>
+
+        <div
+          class="relative z-10 max-w-7xl mx-auto w-full px-5 sm:px-6 grid lg:grid-cols-12 gap-6 items-center"
+        >
+          <div class="lg:col-span-7 relative z-10">
+            <span
+              class="fade-up inline-flex items-center gap-3 hairline glass rounded-full pl-3 pr-4 py-1.5 text-sm text-slate-200"
+              style="animation-delay: 0.05s"
+              ><span class="live-dot"></span> Hackathon 2026 // Bolivia</span
+            >
+            <h1
+              class="mt-7 font-bold leading-[.95] tracking-tight text-[clamp(2.7rem,7.6vw,6.4rem)]"
+              aria-label="Abstráete y crea el futuro"
+            >
+              <span class="line h-solid" data-split>ABSTRÁETE</span>
+              <span class="line h-out" data-split>Y CREA EL</span>
+              <span class="line h-solid" data-split>FUTURO</span>
+            </h1>
+            <p
+              class="fade-up mt-7 text-lg sm:text-xl text-slate-300 max-w-xl leading-relaxed"
+              style="animation-delay: 1.3s"
+            >
+              Desafía la lógica convencional y construye soluciones de alto
+              impacto junto a la comunidad de tecnología más apasionada.
+            </p>
+            <div
+              class="fade-up mt-9 flex flex-col sm:flex-row gap-4"
+              style="animation-delay: 1.5s"
+            >
+              <a href="#sedes" class="btn btn-primary"
+                >¡Quiero Participar! <i data-lucide="arrow-right"></i
+              ></a>
+              <a href="#sedes" class="btn btn-ghost"
+                ><i data-lucide="map-pin"></i> Ver Sedes Presenciales</a
+              >
+            </div>
+          </div>
+
+          <div
+            class="lg:col-span-5 relative h-[360px] sm:h-[480px] lg:h-[620px]"
+          >
+            <div
+              id="gl"
+              class="absolute -inset-x-[10%] -inset-y-[15%] lg:-inset-x-[25%] pointer-events-none"
+              aria-hidden="true"
+            ></div>
+            <a
+              href="#sedes"
+              class="ring-cta magnetic left-0 bottom-2 lg:-left-8"
+              aria-label="Regístrate ahora"
+            >
+              <svg viewBox="0 0 200 200" aria-hidden="true">
+                <defs>
+                  <path
+                    id="circ"
+                    d="M100,100 m-80,0 a80,80 0 1,1 160,0 a80,80 0 1,1 -160,0"
+                  />
+                </defs>
+                <text font-size="16" font-weight="600" fill="currentColor">
+                  <textPath
+                    href="#circ"
+                    textLength="496"
+                    lengthAdjust="spacing"
+                  >
+                    REGÍSTRATE AHORA • REGÍSTRATE AHORA •
+                  </textPath>
+                </text>
+              </svg>
+              <span class="center"><i data-lucide="arrow-up-right"></i></span>
+            </a>
+          </div>
+        </div>
+
+        <div
+          class="relative z-10 max-w-7xl mx-auto w-full px-5 sm:px-6 mt-8 fade-up"
+          style="animation-delay: 1.8s"
+        >
+          <dl
+            class="grid sm:grid-cols-3 hairline glass rounded-xl divide-y sm:divide-y-0 sm:divide-x divide-white/10"
+          >
+            <div class="flex gap-4 p-5">
+              <i
+                data-lucide="calendar-days"
+                class="text-neon shrink-0 mt-1"
+              ></i>
+              <div>
+                <dt class="text-sm text-slate-400">Fecha</dt>
+                <dd class="font-display text-lg text-white">
+                  21 de noviembre · 7:30 a. m.
+                </dd>
+              </div>
+            </div>
+            <div class="flex gap-4 p-5">
+              <i data-lucide="map-pin" class="text-gold shrink-0 mt-1"></i>
+              <div>
+                <dt class="text-sm text-slate-400">Sedes</dt>
+                <dd class="font-display text-lg text-white">
+                  Santa Cruz · Oruro
+                </dd>
+              </div>
+            </div>
+            <div class="flex gap-4 p-5">
+              <i data-lucide="users" class="text-neon shrink-0 mt-1"></i>
+              <div>
+                <dt class="text-sm text-slate-400">Modalidad</dt>
+                <dd class="font-display text-lg text-white">Presencial</dd>
+              </div>
+            </div>
+          </dl>
+          <div class="hidden md:flex justify-center mt-6">
+            <div class="scroll-cue" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BANDAS -->
+      <div class="bands" aria-hidden="true">
+        <div class="band b1">
+          <div
+            class="track"
+            data-words="Abstráete|Crea|Conecta|Construye"
+          ></div>
+        </div>
+        <div class="band b2">
+          <div
+            class="track"
+            data-words="Abstracthon 2026|Bolivia|21 de noviembre|Santa Cruz|Oruro"
+          ></div>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN -->
+      <section
+        id="countdown"
+        class="relative px-5 sm:px-6 py-14"
+        data-deco="countdown"
+      >
+        <div
+          class="relative z-10 max-w-5xl mx-auto hairline rounded-2xl glass overflow-hidden reveal"
+          style="box-shadow: 0 0 70px -25px rgba(82, 242, 242, 0.55)"
+        >
+          <div
+            class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-6 py-4 border-b border-white/10"
+          >
+            <div class="flex items-center gap-3 text-white font-display">
+              <i data-lucide="timer" class="text-neon"></i> Cuenta regresiva ·
+              21 de noviembre, 7:30 a. m.
+            </div>
+            <div class="flex items-center gap-2 text-sm text-slate-400">
+              <span class="live-dot"></span> En vivo
+            </div>
+          </div>
+          <div
+            class="grid grid-cols-2 md:grid-cols-4"
+            role="timer"
+            aria-live="off"
+          >
+            <div class="cd-cell">
+              <div id="d" class="cd-num">00</div>
+              <div class="mt-2 text-sm text-slate-400">Días</div>
+            </div>
+            <div class="cd-cell">
+              <div id="h" class="cd-num">00</div>
+              <div class="mt-2 text-sm text-slate-400">Horas</div>
+            </div>
+            <div class="cd-cell max-md:border-t max-md:border-white/10">
+              <div id="m" class="cd-num">00</div>
+              <div class="mt-2 text-sm text-slate-400">Minutos</div>
+            </div>
+            <div class="cd-cell max-md:border-t max-md:border-white/10">
+              <div id="s" class="cd-num" style="color: var(--gold)">00</div>
+              <div class="mt-2 text-sm text-slate-400">Segundos</div>
+            </div>
+          </div>
+          <p id="cdMsg" class="hidden text-center text-gold font-medium pb-5">
+            El evento ya comenzó.
+          </p>
+        </div>
+      </section>
+
+      <!-- SOBRE -->
+      <section id="sobre" class="relative px-5 sm:px-6 py-24" data-deco="sobre">
+        <div
+          class="relative z-10 max-w-7xl mx-auto grid lg:grid-cols-12 gap-14"
+        >
+          <div class="lg:col-span-6">
+            <h2
+              class="wipe text-4xl sm:text-5xl font-bold text-white leading-tight"
+            >
+              ¿Qué es Abstracthon?
+            </h2>
+            <div class="mt-3 h-1 w-16 rounded bg-neon"></div>
+            <p
+              id="rw"
+              class="rw mt-8 text-xl sm:text-2xl leading-relaxed text-slate-300 max-w-xl"
+            >
+              Abstracthon es más que una hackathon: es un espacio para imaginar,
+              crear y construir soluciones frente a desafíos reales. Reúne a
+              personas con ideas, talento y ganas de generar un cambio,
+              impulsándolas a colaborar, compartir conocimientos y convertir sus
+              propuestas en soluciones innovadoras mediante la tecnología. Aquí,
+              cada idea es el comienzo de algo más grande. ¿Te atreves a
+              convertir la tuya en realidad?
+            </p>
+          </div>
+          <div class="lg:col-span-6 lg:pt-3">
+            <article class="pillar reveal" style="--c: #52f2f2">
+              <div class="ico"><i data-lucide="shapes"></i></div>
+              <div>
+                <h3 class="text-xl font-semibold text-white">
+                  Innovación Abstracta
+                </h3>
+                <p class="mt-1.5 text-slate-400">
+                  Sal de los marcos habituales para resolver problemas reales.
+                </p>
+              </div>
+            </article>
+            <article class="pillar reveal" style="--c: #f2c84b; --dl: 0.12s">
+              <div class="ico"><i data-lucide="network"></i></div>
+              <div>
+                <h3 class="text-xl font-semibold text-white">
+                  Networking &amp; Talento
+                </h3>
+                <p class="mt-1.5 text-slate-400">
+                  Conecta con desarrolladores y creadores de todo el país.
+                </p>
+              </div>
+            </article>
+            <article class="pillar reveal" style="--c: #4aa8ff; --dl: 0.24s">
+              <div class="ico"><i data-lucide="blocks"></i></div>
+              <div>
+                <h3 class="text-xl font-semibold text-white">
+                  Ecosistema Microsoft
+                </h3>
+                <p class="mt-1.5 text-slate-400">
+                  Impulsado por Microsoft Learn Student Ambassadors.
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- GALERÍA -->
+      <section
+        id="galeria"
+        class="relative px-5 sm:px-6 py-24"
+        data-deco="galeria"
+      >
+        <div class="relative z-10 max-w-7xl mx-auto">
+          <div
+            class="flex flex-col md:flex-row md:items-end justify-between gap-6"
+          >
+            <div>
+              <h2 class="wipe text-4xl sm:text-5xl font-bold text-white">
+                Así se vive una hackathon
+              </h2>
+              <div class="mt-3 h-1 w-16 rounded bg-gold"></div>
+            </div>
+            <p class="text-slate-400 max-w-md">
+              Equipos, mentores y comunidad construyendo juntos. Imágenes de
+              ediciones anteriores y de eventos similares.
+            </p>
+          </div>
+          <div class="bento mt-12">
+            <figure class="g a reveal" data-cap="Equipos construyendo en vivo">
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-1.jpg"
+                alt="Equipos trabajando en una hackathon"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption>
+                <i data-lucide="users"></i> Equipos construyendo en vivo
+              </figcaption>
+            </figure>
+            <figure
+              class="g b reveal"
+              style="--dl: 0.06s"
+              data-cap="Trabajo en equipo"
+            >
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-2.jpg"
+                alt="Participantes colaborando"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption>
+                <i data-lucide="handshake"></i> Trabajo en equipo
+              </figcaption>
+            </figure>
+            <figure
+              class="g c reveal"
+              style="--dl: 0.12s"
+              data-cap="Mentoría en la mesa"
+            >
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-3.jpg"
+                alt="Mentoría durante el evento"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption>
+                <i data-lucide="graduation-cap"></i> Mentoría en la mesa
+              </figcaption>
+            </figure>
+            <figure
+              class="g d reveal"
+              style="--dl: 0.18s"
+              data-cap="Código y café"
+            >
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-4.jpg"
+                alt="Programando durante la noche"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption>
+                <i data-lucide="code-xml"></i> Código y café
+              </figcaption>
+            </figure>
+            <figure class="g e reveal" data-cap="Demo day">
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-5.jpg"
+                alt="Presentación de proyectos"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption>
+                <i data-lucide="presentation"></i> Demo day
+              </figcaption>
+            </figure>
+            <figure
+              class="g f reveal"
+              style="--dl: 0.08s"
+              data-cap="Networking"
+            >
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-6.jpg"
+                alt="Networking entre participantes"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption><i data-lucide="network"></i> Networking</figcaption>
+            </figure>
+            <figure
+              class="g g reveal"
+              style="--dl: 0.14s"
+              data-cap="Premiación"
+            >
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-7.jpg"
+                alt="Ceremonia de premiación"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption><i data-lucide="trophy"></i> Premiación</figcaption>
+            </figure>
+            <figure class="g h reveal" style="--dl: 0.2s" data-cap="Comunidad">
+              <div class="ph"><i data-lucide="camera"></i></div>
+              <img
+                src="img/galeria/hackathon-8.jpg"
+                alt="Foto grupal de la comunidad"
+                loading="lazy"
+                onerror="this.remove()"
+              />
+              <figcaption><i data-lucide="heart"></i> Comunidad</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+      <div id="lb" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+        <button
+          id="lbX"
+          class="absolute top-5 right-5 w-11 h-11 grid place-items-center rounded-full hairline text-white"
+          aria-label="Cerrar"
+        >
+          <i data-lucide="x"></i></button
+        ><img alt="" />
+      </div>
+
+      <!-- SEDES -->
+      <section
+        id="sedes"
+        class="relative px-5 sm:px-6 py-24"
+        style="
+          background: linear-gradient(
+            180deg,
+            transparent,
+            rgba(18, 70, 115, 0.22),
+            transparent
+          );
+        "
+        data-deco="sedes"
+      >
+        <div class="relative z-10 max-w-7xl mx-auto">
+          <h2 class="wipe text-4xl sm:text-5xl font-bold text-white">
+            Sedes confirmadas
+          </h2>
+          <div class="mt-3 h-1 w-16 rounded bg-gold"></div>
+          <p class="mt-6 text-slate-400 max-w-xl">
+            Elige tu ciudad para ver la ubicación exacta de la sede.
+          </p>
+          <div class="mt-10 grid lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-4 flex flex-col gap-4">
+              <div
+                role="tablist"
+                aria-label="Sedes"
+                class="flex flex-col gap-3"
+              >
+                <button
+                  role="tab"
+                  id="tab-scz"
+                  aria-selected="true"
+                  aria-controls="mapPanel"
+                  data-sede="scz"
+                  class="sede-btn"
+                >
+                  <i data-lucide="building-2" class="text-neon"></i
+                  ><span
+                    ><span class="block font-display text-lg text-white"
+                      >Santa Cruz</span
+                    ><span class="block text-sm text-slate-400"
+                      >Santa Cruz de la Sierra</span
+                    ></span
+                  ><i data-lucide="circle-check" class="tick"></i>
+                </button>
+                <button
+                  role="tab"
+                  id="tab-oru"
+                  aria-selected="false"
+                  aria-controls="mapPanel"
+                  data-sede="oru"
+                  class="sede-btn"
+                  tabindex="-1"
+                >
+                  <i data-lucide="building-2" class="text-gold"></i
+                  ><span
+                    ><span class="block font-display text-lg text-white"
+                      >Oruro</span
+                    ><span class="block text-sm text-slate-400"
+                      >Departamento de Oruro</span
+                    ></span
+                  ><i data-lucide="circle-check" class="tick"></i>
+                </button>
+              </div>
+              <div
+                class="hairline glass rounded-xl p-6 flex-1"
+                aria-live="polite"
+              >
+                <span class="inline-flex items-center gap-2 text-sm text-neon"
+                  ><span class="live-dot"></span> Sede confirmada</span
+                >
+                <h3
+                  id="sName"
+                  class="mt-3 font-display text-2xl font-semibold text-white"
+                ></h3>
+                <p id="sVenue" class="mt-2 text-slate-300"></p>
+                <p id="sAddr" class="mt-1 text-sm text-slate-400 flex gap-2">
+                  <i data-lucide="map-pin" class="shrink-0 !w-4 !h-4 mt-0.5"></i
+                  ><span></span>
+                </p>
+                <a
+                  id="sLink"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-primary mt-6 w-full justify-center"
+                  >Ver ubicación en Maps <i data-lucide="external-link"></i
+                ></a>
+              </div>
+            </div>
+            <div id="mapPanel" role="tabpanel" class="lg:col-span-8">
+              <div
+                id="mapFrame"
+                class="map-frame h-full min-h-[380px] lg:min-h-[460px] loading"
+              >
+                <span class="corner c1"></span><span class="corner c2"></span
+                ><span class="corner c3"></span><span class="corner c4"></span>
+                <iframe
+                  id="mapIframe"
+                  title="Mapa de la sede"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALIADOS -->
+      <section id="comunidad" class="py-20">
+        <h2
+          class="text-center text-sm sm:text-base tracking-[.28em] text-slate-400 px-5"
+        >
+          ORGANIZACIONES Y COMUNIDADES ALIADAS
+        </h2>
+        <div class="marquee mt-10" aria-label="Aliados">
+          <div class="marquee-track items-center">
+            <div class="flex items-center shrink-0">
+              <img
+                class="logo-item"
+                src="img/startup-grind.png"
+                alt="Startup Grind"
+              /><img
+                class="logo-item"
+                src="img/startup-huddle.png"
+                alt="Startup Huddle"
+              /><img
+                class="logo-item"
+                src="img/bloomnovatech.png"
+                alt="Bloomnovatech"
+              /><img
+                class="logo-item"
+                src="img/iminbound.png"
+                alt="iMinbound"
+              />
+              <img class="logo-item" src="img/startup-grind.png" alt="" /><img
+                class="logo-item"
+                src="img/startup-huddle.png"
+                alt=""
+              /><img class="logo-item" src="img/bloomnovatech.png" alt="" /><img
+                class="logo-item"
+                src="img/iminbound.png"
+                alt=""
+              />
+            </div>
+            <div class="flex items-center shrink-0" aria-hidden="true">
+              <img class="logo-item" src="img/startup-grind.png" alt="" /><img
+                class="logo-item"
+                src="img/startup-huddle.png"
+                alt=""
+              /><img class="logo-item" src="img/bloomnovatech.png" alt="" /><img
+                class="logo-item"
+                src="img/iminbound.png"
+                alt=""
+              />
+              <img class="logo-item" src="img/startup-grind.png" alt="" /><img
+                class="logo-item"
+                src="img/startup-huddle.png"
+                alt=""
+              /><img class="logo-item" src="img/bloomnovatech.png" alt="" /><img
+                class="logo-item"
+                src="img/iminbound.png"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CIERRE -->
+      <section
+        id="registro"
+        class="relative px-5 sm:px-6 py-28 text-center overflow-hidden"
+        data-deco="registro"
+      >
+        <div class="relative z-10 max-w-5xl mx-auto">
+          <h2
+            class="font-display font-bold text-white leading-[1] text-[clamp(2.3rem,6.6vw,5.6rem)] reveal"
+          >
+            ¿Te atreves a convertir tu idea en realidad?
+          </h2>
+          <div
+            class="mt-10 flex flex-col sm:flex-row gap-4 justify-center reveal"
+            style="--dl: 0.15s"
+          >
+            <a href="#sedes" class="btn btn-primary"
+              >¡Quiero Participar! <i data-lucide="arrow-right"></i
+            ></a>
+            <a href="#sedes" class="btn btn-ghost"
+              ><i data-lucide="map-pin"></i> Ver Sedes Presenciales</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 glass overflow-hidden">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6 pt-14 pb-4">
+        <div class="mega" aria-hidden="true">ABSTRACTHON</div>
+      </div>
+      <div
+        class="max-w-7xl mx-auto px-5 sm:px-6 py-12 grid md:grid-cols-3 gap-10"
+      >
+        <div>
+          <div class="flex items-center gap-3">
+            <img
+              src="img/abstracthon-logo.png"
+              alt="Abstracthon"
+              class="h-14 w-auto"
+              onerror="this.style.display = 'none'"
+            /><img
+              src="img/comunidad.png"
+              alt="Comunidad"
+              class="h-12 w-auto"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <p class="mt-4 text-sm text-slate-400 max-w-xs">
+            Organizado por
+            <strong class="text-white font-medium"
+              >Microsoft Learn Student Ambassadors - University
+              Community</strong
+            >
+          </p>
+        </div>
+        <nav aria-label="Pie de página">
+          <ul class="grid grid-cols-2 gap-3 text-sm text-slate-300">
+            <li>
+              <a class="hover:text-neon transition" href="#sobre"
+                >Sobre el evento</a
+              >
+            </li>
+            <li>
+              <a class="hover:text-neon transition" href="#galeria">Galería</a>
+            </li>
+            <li>
+              <a class="hover:text-neon transition" href="#sedes">Sedes</a>
+            </li>
+            <li>
+              <a class="hover:text-neon transition" href="#countdown"
+                >Countdown</a
+              >
+            </li>
+            <li>
+              <a class="hover:text-neon transition" href="#comunidad"
+                >Comunidad</a
+              >
+            </li>
+          </ul>
+        </nav>
+        <div class="md:justify-self-end">
+          <p class="text-sm text-slate-400">Síguenos</p>
+          <div class="mt-3 flex gap-3 text-lg">
+            <a
+              href="#"
+              aria-label="Facebook"
+              class="w-10 h-10 grid place-items-center rounded-lg hairline hover:border-neon hover:text-neon transition"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+            <a
+              href="#"
+              aria-label="X"
+              class="w-10 h-10 grid place-items-center rounded-lg hairline hover:border-neon hover:text-neon transition"
+              ><i class="fa-brands fa-x-twitter"></i
+            ></a>
+            <a
+              href="#"
+              aria-label="Instagram"
+              class="w-10 h-10 grid place-items-center rounded-lg hairline hover:border-neon hover:text-neon transition"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a
+              href="#"
+              aria-label="LinkedIn"
+              class="w-10 h-10 grid place-items-center rounded-lg hairline hover:border-neon hover:text-neon transition"
+              ><i class="fa-brands fa-linkedin-in"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+      <p
+        class="border-t border-white/10 text-center text-xs text-slate-500 py-6 px-5"
+      >
+        © 2026 Abstracthon · Bolivia. Todos los derechos reservados.
+      </p>
+    </footer>
+
+    <script>
+      const REDUCE = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const $ = (s, r = document) => r.querySelector(s),
+        $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+      /* Menú móvil */
+      const mb = $("#menuBtn"),
+        mm = $("#mobileMenu");
+      mb.addEventListener("click", () => {
+        const h = mm.classList.toggle("hidden");
+        mb.setAttribute("aria-expanded", String(!h));
+      });
+      $$("a", mm).forEach((a) =>
+        a.addEventListener("click", () => {
+          mm.classList.add("hidden");
+          mb.setAttribute("aria-expanded", "false");
+        }),
+      );
+
+      /* Título: letras animadas + efecto "decodificar" al pasar el mouse */
+      (function () {
+        let i = 0;
+        const CH = "01<>/{}#*+=ABCDEFGHJKLMNPRSTUVXYZ";
+        $$("[data-split]").forEach((line) => {
+          const t = line.textContent;
+          line.textContent = "";
+          [...t].forEach((c) => {
+            const s = document.createElement("span");
+            s.setAttribute("aria-hidden", "true");
+            if (c === " ") {
+              s.className = "sp";
+            } else {
+              s.className = "ch";
+              s.textContent = c;
+              s.style.setProperty("--i", i++);
+              s.addEventListener("mouseenter", () => {
+                if (s._b) return;
+                s._b = 1;
+                let n = 0;
+                const iv = setInterval(() => {
+                  s.textContent = CH[(Math.random() * CH.length) | 0];
+                  if (++n > 7) {
+                    clearInterval(iv);
+                    s.textContent = c;
+                    s._b = 0;
+                  }
+                }, 40);
+              });
+            }
+            line.appendChild(s);
+          });
+        });
+      })();
+
+      /* Bandas diagonales */
+      $$(".track[data-words]").forEach((tr) => {
+        const half = (
+          '<span class="w">' +
+          tr.dataset.words.split("|").join('</span><span class="w">') +
+          "</span>"
+        ).repeat(3);
+        tr.innerHTML = half + half;
+      });
+
+      /* Decoraciones abstractas con parallax */
+      const SHAPES = {
+        tri: '<polygon points="50,8 94,88 6,88"/>',
+        hex: '<polygon points="50,5 91,27 91,73 50,95 9,73 9,27"/>',
+        cube: '<polygon points="50,6 90,28 90,72 50,94 10,72 10,28"/><polyline points="10,28 50,50 90,28"/><line x1="50" y1="50" x2="50" y2="94"/>',
+        plus: '<line x1="50" y1="10" x2="50" y2="90"/><line x1="10" y1="50" x2="90" y2="50"/>',
+        ring: '<circle cx="50" cy="50" r="44" stroke-dasharray="3 7"/><circle cx="50" cy="50" r="26"/>',
+        wave: '<path d="M2 50 Q 14 8 26 50 T 50 50 T 74 50 T 98 50"/>',
+        sq: '<rect x="16" y="16" width="68" height="68" transform="rotate(20 50 50)"/><rect x="30" y="30" width="40" height="40" transform="rotate(20 50 50)"/>',
+        dots:
+          '<g fill="currentColor" stroke="none">' +
+          [0, 1, 2, 3]
+            .map((r) =>
+              [0, 1, 2, 3]
+                .map(
+                  (c) =>
+                    `<circle cx="${14 + c * 24}" cy="${14 + r * 24}" r="2.4"/>`,
+                )
+                .join(""),
+            )
+            .join("") +
+          "</g>",
+      };
+      const DECO = {
+        countdown: [
+          ["wave", "3%", "10%", 150, "#52F2F2", 0.05],
+          ["plus", "94%", "60%", 34, "#F2C84B", 0.1],
+        ],
+        sobre: [
+          ["cube", "52%", "4%", 120, "#52F2F2", 0.08],
+          ["dots", "94%", "72%", 90, "#4aa8ff", 0.05],
+          ["tri", "2%", "78%", 54, "#D93030", 0.12],
+        ],
+        galeria: [
+          ["hex", "96%", "4%", 90, "#F2C84B", 0.07],
+          ["plus", "1%", "50%", 40, "#52F2F2", 0.1],
+          ["ring", "90%", "88%", 110, "#4aa8ff", 0.06],
+        ],
+        sedes: [
+          ["sq", "1%", "6%", 100, "#52F2F2", 0.07],
+          ["tri", "95%", "92%", 60, "#F2C84B", 0.1],
+        ],
+        registro: [
+          ["cube", "8%", "18%", 130, "#52F2F2", 0.09],
+          ["hex", "86%", "12%", 100, "#F2C84B", 0.06],
+          ["ring", "78%", "72%", 130, "#D93030", 0.08],
+          ["plus", "14%", "78%", 40, "#F2C84B", 0.12],
+          ["dots", "46%", "88%", 90, "#4aa8ff", 0.05],
+        ],
+      };
+      const decos = [];
+      Object.entries(DECO).forEach(([id, list]) => {
+        const sec = $('[data-deco="' + id + '"]');
+        if (!sec) return;
+        sec.style.overflow = "hidden";
+        list.forEach(([sh, x, y, w, col, sp], k) => {
+          const d = document.createElement("div");
+          d.className = "deco";
+          d.style.cssText = `left:${x};top:${y};width:${w}px;color:${col}`;
+          d.innerHTML = `<div class="in" style="--d:${8 + k * 1.7}s;animation-delay:-${k * 2}s"><svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${SHAPES[sh]}</svg></div>`;
+          sec.prepend(d);
+          decos.push({ el: d, sec, sp });
+        });
+      });
+
+      /* Revelados al entrar en pantalla */
+      const io = new IntersectionObserver(
+        (es) =>
+          es.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          }),
+        { threshold: 0.15 },
+      );
+      $$(".reveal,.wipe").forEach((el) => io.observe(el));
+
+      /* Texto que se ilumina con el scroll */
+      const rw = $("#rw");
+      let words = [];
+      if (rw) {
+        words = rw.textContent.trim().split(/\s+/);
+        rw.innerHTML = words
+          .map((w) => `<span class="wd">${w}</span>`)
+          .join(" ");
+        words = $$(".wd", rw);
+      }
+
+      /* Scroll: progreso, parallax, palabras */
+      let ticking = false;
+      function onScroll() {
+        const y = scrollY,
+          vh = innerHeight,
+          max = document.documentElement.scrollHeight - vh;
+        $("#prog").style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+        if (!REDUCE)
+          decos.forEach((d) => {
+            const r = d.sec.getBoundingClientRect();
+            if (r.bottom < -200 || r.top > vh + 200) return;
+            d.el.style.transform = `translate3d(0,${(r.top + r.height / 2 - vh / 2) * d.sp}px,0)`;
+          });
+        if (words.length) {
+          const r = rw.getBoundingClientRect();
+          const p = Math.min(
+            1,
+            Math.max(0, (vh * 0.82 - r.top) / (r.height * 1.05)),
+          );
+          const n = Math.floor(p * words.length);
+          words.forEach((w, i) => w.classList.toggle("on", i < n));
+        }
+        ticking = false;
+      }
+      addEventListener(
+        "scroll",
+        () => {
+          if (!ticking) {
+            ticking = true;
+            requestAnimationFrame(onScroll);
+          }
+        },
+        { passive: true },
+      );
+      addEventListener("resize", onScroll);
+      onScroll();
+
+      /* Spotlight en pilares */
+      $$(".pillar").forEach((p) =>
+        p.addEventListener("mousemove", (e) => {
+          const r = p.getBoundingClientRect();
+          p.style.setProperty("--mx", e.clientX - r.left + "px");
+          p.style.setProperty("--my", e.clientY - r.top + "px");
+        }),
+      );
+
+      /* Cursor personalizado + botones magnéticos */
+      (function () {
+        if (!matchMedia("(hover:hover) and (pointer:fine)").matches) return;
+        const ring = $("#curRing"),
+          dot = $("#curDot"),
+          rg = $(".cur-ring");
+        let x = innerWidth / 2,
+          y = innerHeight / 2,
+          rx = x,
+          ry = y;
+        addEventListener("mousemove", (e) => {
+          x = e.clientX;
+          y = e.clientY;
+          dot.style.transform = `translate3d(${x}px,${y}px,0)`;
+          rg.classList.toggle(
+            "big",
+            !!e.target.closest("a,button,.g,.sede-btn"),
+          );
+          $$(".magnetic").forEach((m) => {
+            const r = m.getBoundingClientRect(),
+              cx = r.left + r.width / 2,
+              cy = r.top + r.height / 2,
+              dx = x - cx,
+              dy = y - cy;
+            m.style.transform =
+              Math.hypot(dx, dy) < 150
+                ? `translate(${dx * 0.25}px,${dy * 0.25}px)`
+                : "";
+          });
+        });
+        (function loop() {
+          rx += (x - rx) * 0.16;
+          ry += (y - ry) * 0.16;
+          ring.style.transform = `translate3d(${rx}px,${ry}px,0)`;
+          requestAnimationFrame(loop);
+        })();
+      })();
+
+      /* Countdown al 21 de noviembre (hora de Bolivia, UTC-4) */
+      (function () {
+        const EVENT_DATE = new Date("2026-11-21T07:30:00-04:00").getTime(); // 21 nov 2026, 7:30 a. m. (Bolivia, UTC-4)
+        function getTimeLeft() {
+          const diff = Math.max(0, EVENT_DATE - Date.now());
+          return {
+            done: diff === 0,
+            days: Math.floor(diff / 86400000),
+            hours: Math.floor((diff / 3600000) % 24),
+            minutes: Math.floor((diff / 60000) % 60),
+            seconds: Math.floor((diff / 1000) % 60),
+          };
+        }
+        const pad = (n) => String(n).padStart(2, "0");
+        const set = (id, v) => {
+          const e = $("#" + id);
+          if (e.textContent !== v) {
+            e.textContent = v;
+            e.classList.remove("flip");
+            void e.offsetWidth;
+            e.classList.add("flip");
+          }
+        };
+        function tick() {
+          const t = getTimeLeft();
+          set("d", pad(t.days));
+          set("h", pad(t.hours));
+          set("m", pad(t.minutes));
+          set("s", pad(t.seconds));
+          if (t.done) {
+            $("#cdMsg").classList.remove("hidden");
+            return;
+          }
+          setTimeout(tick, 1000 - (Date.now() % 1000)); // se re-sincroniza con cada segundo real, sin deriva
+        }
+        tick();
+      })();
+
+      /* Galería: lightbox */
+      (function () {
+        const lb = $("#lb"),
+          im = $("img", lb);
+        $$(".g").forEach((g) =>
+          g.addEventListener("click", () => {
+            const src = $("img", g);
+            if (!src) return;
+            im.src = src.src;
+            im.alt = src.alt;
+            lb.classList.add("open");
+          }),
+        );
+        const close = () => lb.classList.remove("open");
+        lb.addEventListener("click", (e) => {
+          if (e.target !== im) close();
+        });
+        addEventListener("keydown", (e) => {
+          if (e.key === "Escape") close();
+        });
+      })();
+
+      /* Sedes + mapa interactivo */
+      (function () {
+        const SEDES = {
+          scz: {
+            name: "Sede Santa Cruz",
+            venue: "Universidad Católica Boliviana (UCB)",
+            addr: "Campus UCB, Carretera al Norte, Santa Cruz de la Sierra",
+            q: "Universidad Católica Boliviana UCB Santa Cruz Campus Carretera al Norte",
+            link: "https://maps.app.goo.gl/cGq8RF7bHTFowkxE6?g_st=ac",
+          },
+          oru: {
+            name: "Sede Oruro",
+            venue: "Carrera de Ingeniería de Sistemas e Informática",
+            addr: "Oruro, Bolivia · Plus Code 2V66+8V4",
+            q: "2V66+8V4 Oruro, Bolivia",
+            link: "https://maps.app.goo.gl/qkPSB4hS5sUnXZza7",
+          },
+        };
+        const tabs = $$(".sede-btn"),
+          frame = $("#mapFrame"),
+          ifr = $("#mapIframe");
+        ifr.addEventListener("load", () => frame.classList.remove("loading"));
+        function select(key) {
+          const s = SEDES[key];
+          tabs.forEach((t) => {
+            const on = t.dataset.sede === key;
+            t.setAttribute("aria-selected", on);
+            t.tabIndex = on ? 0 : -1;
+          });
+          $("#sName").textContent = s.name;
+          $("#sVenue").textContent = s.venue;
+          $("#sAddr span").textContent = s.addr;
+          $("#sLink").href = s.link;
+          frame.classList.add("loading");
+          ifr.src = `https://www.google.com/maps?q=${encodeURIComponent(s.q)}&z=16&output=embed`;
+          $("#mapPanel").setAttribute("aria-labelledby", "tab-" + key);
+          ifr.title = "Mapa de " + s.name;
+        }
+        tabs.forEach((t, i) => {
+          t.addEventListener("click", () => select(t.dataset.sede));
+          t.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+              e.preventDefault();
+              const n = tabs[(i + 1) % tabs.length];
+              n.focus();
+              select(n.dataset.sede);
+            }
+          });
+        });
+        select("scz");
+      })();
+
+      /* Canvas 2D: red de nodos reactiva al mouse */
+      (function () {
+        const cv = $("#bg"),
+          ctx = cv.getContext("2d"),
+          colors = [
+            "82,242,242",
+            "82,242,242",
+            "82,242,242",
+            "74,168,255",
+            "242,200,75",
+          ];
+        let W,
+          H,
+          pts = [],
+          mouse = { x: -999, y: -999 };
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        function resize() {
+          const r = cv.getBoundingClientRect();
+          W = r.width;
+          H = r.height;
+          cv.width = W * dpr;
+          cv.height = H * dpr;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          pts = Array.from(
+            { length: Math.min(100, Math.floor((W * H) / 16000)) },
+            () => ({
+              x: Math.random() * W,
+              y: Math.random() * H,
+              vx: (Math.random() - 0.5) * 0.3,
+              vy: (Math.random() - 0.5) * 0.3,
+              r: Math.random() * 1.6 + 0.7,
+              c: colors[(Math.random() * colors.length) | 0],
+              s: Math.random() < 0.14 ? 3 + ((Math.random() * 2) | 0) : 0,
+            }),
+          );
+        }
+        function poly(p, n, size) {
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
+            const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+            ctx[i ? "lineTo" : "moveTo"](
+              p.x + Math.cos(a) * size,
+              p.y + Math.sin(a) * size,
+            );
+          }
+          ctx.closePath();
+        }
+        let vis = true;
+        new IntersectionObserver((e) => (vis = e[0].isIntersecting)).observe(
+          cv,
+        );
+        function frame() {
+          if (vis) {
+            ctx.clearRect(0, 0, W, H);
+            for (const p of pts) {
+              const dx = p.x - mouse.x,
+                dy = p.y - mouse.y,
+                d = Math.hypot(dx, dy);
+              if (d < 140 && d > 0) {
+                p.x += (dx / d) * 1.5;
+                p.y += (dy / d) * 1.5;
+              }
+              p.x += p.vx;
+              p.y += p.vy;
+              if (p.x < 0 || p.x > W) p.vx *= -1;
+              if (p.y < 0 || p.y > H) p.vy *= -1;
+            }
+            for (let i = 0; i < pts.length; i++) {
+              const a = pts[i];
+              for (let j = i + 1; j < pts.length; j++) {
+                const b = pts[j],
+                  d = Math.hypot(a.x - b.x, a.y - b.y);
+                if (d < 125) {
+                  ctx.strokeStyle = `rgba(82,242,242,${(1 - d / 125) * 0.24})`;
+                  ctx.lineWidth = 0.8;
+                  ctx.beginPath();
+                  ctx.moveTo(a.x, a.y);
+                  ctx.lineTo(b.x, b.y);
+                  ctx.stroke();
+                }
+              }
+              const md = Math.hypot(a.x - mouse.x, a.y - mouse.y);
+              if (md < 190) {
+                ctx.strokeStyle = `rgba(242,200,75,${(1 - md / 190) * 0.5})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(mouse.x, mouse.y);
+                ctx.stroke();
+              }
+            }
+            for (const p of pts) {
+              ctx.shadowBlur = 12;
+              ctx.shadowColor = `rgb(${p.c})`;
+              ctx.fillStyle = ctx.strokeStyle = `rgba(${p.c},.85)`;
+              ctx.lineWidth = 1.1;
+              if (p.s) {
+                poly(p, p.s, 6);
+                ctx.stroke();
+              } else {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, 7);
+                ctx.fill();
+              }
+            }
+            ctx.shadowBlur = 0;
+          }
+          if (!REDUCE) requestAnimationFrame(frame);
+        }
+        const hero = $("#inicio");
+        hero.addEventListener("mousemove", (e) => {
+          const r = cv.getBoundingClientRect();
+          mouse.x = e.clientX - r.left;
+          mouse.y = e.clientY - r.top;
+        });
+        hero.addEventListener("mouseleave", () => {
+          mouse.x = mouse.y = -999;
+        });
+        hero.addEventListener(
+          "touchmove",
+          (e) => {
+            const t = e.touches[0],
+              r = cv.getBoundingClientRect();
+            mouse.x = t.clientX - r.left;
+            mouse.y = t.clientY - r.top;
+          },
+          { passive: true },
+        );
+        addEventListener("resize", resize);
+        resize();
+        frame();
+      })();
+
+      /* Hero 3D (Three.js): esfera abstracta que se deforma, anillos, satélites y partículas */
+      (function () {
+        const host = $("#gl");
+        if (!host || !window.THREE) return;
+        let renderer;
+        try {
+          renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        } catch (e) {
+          return;
+        }
+        renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+        host.appendChild(renderer.domElement);
+        const scene = new THREE.Scene(),
+          cam = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+        cam.position.z = 8;
+        const g = new THREE.Group();
+        scene.add(g);
+        const wire = (c, o = 1) =>
+          new THREE.MeshBasicMaterial({
+            color: c,
+            wireframe: true,
+            transparent: true,
+            opacity: o,
+          });
+
+        const core = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(1.8, 2),
+          wire(0x52f2f2, 0.8),
+        );
+        g.add(core);
+        const base = core.geometry.attributes.position.array.slice();
+        g.add(
+          new THREE.Mesh(
+            new THREE.IcosahedronGeometry(1.25, 1),
+            new THREE.MeshBasicMaterial({
+              color: 0x124673,
+              transparent: true,
+              opacity: 0.6,
+            }),
+          ),
+        );
+        const inner = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(1.32, 1),
+          wire(0xf2c84b, 0.55),
+        );
+        g.add(inner);
+
+        const rings = [
+          [2.7, 0x52f2f2, 1.1, 0.2],
+          [3.2, 0xf2c84b, 0.5, -0.5],
+          [3.7, 0x4aa8ff, 1.4, 0.8],
+        ].map(([r, c, rx, ry]) => {
+          const m = new THREE.Mesh(
+            new THREE.TorusGeometry(r, 0.012, 8, 180),
+            new THREE.MeshBasicMaterial({
+              color: c,
+              transparent: true,
+              opacity: 0.8,
+            }),
+          );
+          m.rotation.set(rx, ry, 0);
+          g.add(m);
+          return m;
+        });
+
+        const N = 520,
+          pos = new Float32Array(N * 3);
+        for (let i = 0; i < N; i++) {
+          const r = 2.5 + Math.random() * 2.2,
+            t = Math.random() * Math.PI * 2,
+            p = Math.acos(2 * Math.random() - 1);
+          pos.set(
+            [
+              r * Math.sin(p) * Math.cos(t),
+              r * Math.sin(p) * Math.sin(t),
+              r * Math.cos(p),
+            ],
+            i * 3,
+          );
+        }
+        const pg = new THREE.BufferGeometry();
+        pg.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+        const cloud = new THREE.Points(
+          pg,
+          new THREE.PointsMaterial({
+            color: 0x52f2f2,
+            size: 0.035,
+            transparent: true,
+            opacity: 0.9,
+          }),
+        );
+        g.add(cloud);
+
+        const sats = [
+          [new THREE.OctahedronGeometry(0.3), 0xd93030, 3.0, 0.55],
+          [new THREE.TetrahedronGeometry(0.34), 0xf2c84b, 3.5, -0.4],
+          [new THREE.BoxGeometry(0.4, 0.4, 0.4), 0x52f2f2, 2.8, 0.7],
+          [
+            new THREE.TorusKnotGeometry(0.18, 0.055, 48, 6),
+            0x4aa8ff,
+            3.9,
+            -0.3,
+          ],
+        ].map(([geo, c, r, sp], i) => {
+          const m = new THREE.Mesh(geo, wire(c, 0.95));
+          g.add(m);
+          return { m, r, sp, ph: i * 1.7 };
+        });
+
+        function size() {
+          const w = host.clientWidth,
+            h = host.clientHeight;
+          renderer.setSize(w, h, false);
+          cam.aspect = w / h;
+          cam.position.z =
+            4.8 /
+            (Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) *
+              Math.min(w / h, 1));
+          cam.updateProjectionMatrix();
+        }
+        new ResizeObserver(size).observe(host);
+        size();
+
+        let mx = 0,
+          my = 0,
+          cx = 0,
+          cy = 0,
+          vis = true,
+          t0 = performance.now();
+        addEventListener("mousemove", (e) => {
+          mx = (e.clientX / innerWidth) * 2 - 1;
+          my = (e.clientY / innerHeight) * 2 - 1;
+        });
+        new IntersectionObserver((e) => (vis = e[0].isIntersecting)).observe(
+          host,
+        );
+
+        function render(now) {
+          const t = (now - t0) / 1000;
+          if (vis) {
+            const a = core.geometry.attributes.position.array;
+            for (let i = 0; i < a.length; i += 3) {
+              const x = base[i],
+                y = base[i + 1],
+                z = base[i + 2];
+              const s =
+                1 +
+                0.07 *
+                  (Math.sin(x * 1.8 + t * 1.1) +
+                    Math.sin(y * 2.1 + t * 0.9) +
+                    Math.sin(z * 1.6 + t * 1.3));
+              a[i] = x * s;
+              a[i + 1] = y * s;
+              a[i + 2] = z * s;
+            }
+            core.geometry.attributes.position.needsUpdate = true;
+            cx += (mx * 0.7 - cx) * 0.05;
+            cy += (my * 0.45 - cy) * 0.05;
+            g.rotation.y = t * 0.14 + cx;
+            g.rotation.x = cy;
+            inner.rotation.y = -t * 0.5;
+            inner.rotation.x = t * 0.3;
+            rings.forEach((r, i) => {
+              r.rotation.z += 0.0025 * (i % 2 ? -1 : 1);
+            });
+            cloud.rotation.y = -t * 0.05;
+            sats.forEach((s) => {
+              const an = s.ph + t * s.sp;
+              s.m.position.set(
+                Math.cos(an) * s.r,
+                Math.sin(an * 1.3 + s.ph) * s.r * 0.45,
+                Math.sin(an) * s.r,
+              );
+              s.m.rotation.x += 0.012;
+              s.m.rotation.y += 0.017;
+            });
+            g.position.y = Math.min(scrollY, 800) * 0.0018;
+            g.scale.setScalar(1 - Math.min(scrollY, 800) * 0.00025);
+            renderer.render(scene, cam);
+          }
+          if (!REDUCE) requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
+      })();
+
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
