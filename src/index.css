@@ -222,3 +222,16 @@ body {
   background-size: 100% 100%;
   -webkit-text-stroke-color: var(--neon);
 }
+
+/* Accesibilidad: respeta la preferencia de movimiento reducido del sistema */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .cta-border::before {
+    animation: none;
+  }
+}

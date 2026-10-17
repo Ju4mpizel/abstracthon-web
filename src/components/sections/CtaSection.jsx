@@ -1,5 +1,6 @@
 import { ArrowRight, MapPin } from "lucide-react";
 import { motion } from "motion/react";
+import { REGISTER_URL, linkProps } from "../../config/eventData";
 
 export default function CtaSection() {
   return (
@@ -22,7 +23,7 @@ export default function CtaSection() {
           <motion.a
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            href="#sedes"
+            {...linkProps(REGISTER_URL)}
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-neon text-deep font-semibold px-6 py-3.5 w-full sm:w-auto shadow-[0_0_25px_rgba(82,242,242,0.5)] hover:shadow-[0_0_35px_rgba(82,242,242,0.8)] transition"
           >
             ¡Quiero Participar! <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />

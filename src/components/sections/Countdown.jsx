@@ -47,7 +47,7 @@ export default function Countdown() {
             <span>Cuenta regresiva · 21 de noviembre, 7:30 a. m.</span>
           </div>
           <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-400">
-            <span className="live-dot" /> En vivo
+            <span className="live-dot" /> Hora de Bolivia (UTC-4)
           </div>
         </div>
 

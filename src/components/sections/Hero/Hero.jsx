@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   MapPin,
@@ -7,8 +7,14 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import { motion } from "motion/react";
-import Hero3D from "./Hero3D";
-import { EVENT_CONFIG } from "../../../config/eventData";
+import {
+  EVENT_CONFIG,
+  REGISTER_URL,
+  linkProps,
+} from "../../../config/eventData";
+
+// Three.js se descarga aparte para no bloquear el primer render
+const Hero3D = lazy(() => import("./Hero3D"));
 
 const SCRAMBLE_CHARS = "01<>/{}#*+=ABCDEFGHJKLMNPRSTUVXYZ";
 
@@ -25,16 +31,21 @@ function ScrambleWord({ text, isOutline = false }) {
 function ScrambleChar({ char, isOutline }) {
   const [display, setDisplay] = useState(char);
   const [busy, setBusy] = useState(false);
+  const intervalRef = useRef(null);
+
+  // Limpia el intervalo si el componente se desmonta a mitad de la animación
+  useEffect(() => () => clearInterval(intervalRef.current), []);
 
   const handleMouseEnter = () => {
     if (busy || char === " ") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     setBusy(true);
     let iterations = 0;
-    const interval = setInterval(() => {
+    intervalRef.current = setInterval(() => {
       setDisplay(SCRAMBLE_CHARS[(Math.random() * SCRAMBLE_CHARS.length) | 0]);
       iterations++;
       if (iterations > 7) {
-        clearInterval(interval);
+        clearInterval(intervalRef.current);
         setDisplay(char);
         setBusy(false);
       }
@@ -118,7 +129,7 @@ export default function Hero() {
             <motion.a
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              href="#sedes"
+              {...linkProps(REGISTER_URL)}
               className="inline-flex items-center justify-center gap-2.5 rounded-lg bg-neon text-deep font-semibold px-6 py-3.5 shadow-[0_0_25px_rgba(82,242,242,0.5)] hover:shadow-[0_0_35px_rgba(82,242,242,0.7)] transition"
             >
               ¡Quiero Participar! <ArrowRight className="w-5 h-5" />
@@ -141,16 +152,18 @@ export default function Hero() {
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           className="lg:col-span-5 relative w-full h-[360px] sm:h-[460px] lg:h-[560px] flex items-center justify-center"
         >
-          <Hero3D />
+          <Suspense fallback={null}>
+            <Hero3D />
+          </Suspense>
 
           <a
-            href="#sedes"
+            {...linkProps(REGISTER_URL)}
             className="absolute left-2 sm:left-4 bottom-2 sm:bottom-4 lg:-left-6 w-[116px] h-[116px] sm:w-[124px] sm:h-[124px] grid place-items-center rounded-full text-neon bg-deep/85 backdrop-blur-md border border-white/10 hover:border-neon transition duration-300 z-20 group"
             aria-label="Regístrate ahora"
           >
             <svg
               viewBox="0 0 200 200"
-              className="absolute inset-0 w-full h-full animate-[spin_18s_linear_infinite]"
+              className="absolute inset-0 w-full h-full animate-[spin_18s_linear_infinite] motion-reduce:animate-none"
               aria-hidden="true"
             >
               <defs>

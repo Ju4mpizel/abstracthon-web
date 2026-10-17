@@ -15,6 +15,10 @@ export default function Hero3D() {
       return;
     }
 
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     host.appendChild(renderer.domElement);
 
@@ -128,6 +132,7 @@ export default function Hero3D() {
       renderer.setSize(w, h, false);
       cam.aspect = w / h;
       cam.updateProjectionMatrix();
+      if (reduceMotion) renderer.render(scene, cam);
     };
 
     const resizeObs = new ResizeObserver(handleResize);
@@ -144,11 +149,22 @@ export default function Hero3D() {
     };
     window.addEventListener("mousemove", onMouseMove);
 
+    // Pausa el render cuando el Hero no está visible en pantalla
+    let visible = true;
+    const visObs = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    visObs.observe(host);
+
     let animId;
     const t0 = performance.now();
 
     const renderLoop = (now) => {
-      const t = (now - t0) / 1000;
+      if (!visible && !reduceMotion) {
+        animId = requestAnimationFrame(renderLoop);
+        return;
+      }
+      const t = reduceMotion ? 0 : (now - t0) / 1000;
 
       const a = core.geometry.attributes.position.array;
       for (let i = 0; i < a.length; i += 3) {
@@ -193,13 +209,14 @@ export default function Hero3D() {
       });
 
       renderer.render(scene, cam);
-      animId = requestAnimationFrame(renderLoop);
+      if (!reduceMotion) animId = requestAnimationFrame(renderLoop);
     };
 
     animId = requestAnimationFrame(renderLoop);
 
     return () => {
       resizeObs.disconnect();
+      visObs.disconnect();
       window.removeEventListener("mousemove", onMouseMove);
       cancelAnimationFrame(animId);
       if (renderer.domElement.parentNode) {

@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { EVENT_CONFIG } from "../../config/eventData";
+import { EVENT_CONFIG, REGISTER_URL, linkProps } from "../../config/eventData";
+
+const NAV_LINKS = [
+  { id: "sobre", label: "Sobre el evento" },
+  { id: "galeria", label: "Galería" },
+  { id: "sedes", label: "Sedes" },
+  { id: "countdown", label: "Cuenta regresiva" },
+  { id: "comunidad", label: "Comunidad" },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,37 +48,19 @@ export default function Navbar() {
         </a>
 
         <ul className="hidden lg:flex items-center gap-7 text-sm text-slate-300">
-          <li>
-            <a className="nav-link" href="#sobre">
-              Sobre el evento
-            </a>
-          </li>
-          <li>
-            <a className="nav-link" href="#galeria">
-              Galería
-            </a>
-          </li>
-          <li>
-            <a className="nav-link" href="#sedes">
-              Sedes
-            </a>
-          </li>
-          <li>
-            <a className="nav-link" href="#countdown">
-              Countdown
-            </a>
-          </li>
-          <li>
-            <a className="nav-link" href="#comunidad">
-              Comunidad
-            </a>
-          </li>
+          {NAV_LINKS.map(({ id, label }) => (
+            <li key={id}>
+              <a className="nav-link" href={`#${id}`}>
+                {label}
+              </a>
+            </li>
+          ))}
         </ul>
 
         <div className="flex items-center gap-2 sm:gap-3">
           <motion.a
             whileTap={{ scale: 0.96 }}
-            href="#sedes"
+            {...linkProps(REGISTER_URL)}
             className="cta-border scale-90 sm:scale-100"
           >
             <span>Inscribirse</span>
@@ -97,19 +87,17 @@ export default function Navbar() {
             className="lg:hidden px-6 py-5 border-t border-white/10 bg-[#060E26]/95 backdrop-blur-xl overflow-hidden"
           >
             <ul className="flex flex-col gap-4 text-base font-medium text-slate-200">
-              {["sobre", "galeria", "sedes", "countdown", "comunidad"].map(
-                (id) => (
-                  <li key={id}>
-                    <a
-                      onClick={() => setIsOpen(false)}
-                      className="block py-1 hover:text-neon transition capitalize"
-                      href={`#${id}`}
-                    >
-                      {id === "sobre" ? "Sobre el evento" : id}
-                    </a>
-                  </li>
-                ),
-              )}
+              {NAV_LINKS.map(({ id, label }) => (
+                <li key={id}>
+                  <a
+                    onClick={() => setIsOpen(false)}
+                    className="block py-1 hover:text-neon transition"
+                    href={`#${id}`}
+                  >
+                    {label}
+                  </a>
+                </li>
+              ))}
             </ul>
           </motion.div>
         )}

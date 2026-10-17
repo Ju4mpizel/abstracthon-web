@@ -20,6 +20,9 @@ export default function Footer() {
     },
   ];
 
+  // Oculta redes que aún no tienen enlace real (href="#")
+  const activeSocials = SOCIAL_LINKS.filter((s) => s.href !== "#");
+
   return (
     <footer className="border-t border-white/10 bg-[#0a1e3e]/40 backdrop-blur-md overflow-hidden w-full">
       {/* Texto Gigante Centrado */}
@@ -84,7 +87,7 @@ export default function Footer() {
             </li>
             <li>
               <a className="hover:text-neon transition" href="#countdown">
-                Countdown
+                Cuenta regresiva
               </a>
             </li>
             <li className="col-span-2 sm:col-span-1">
@@ -99,14 +102,14 @@ export default function Footer() {
         <div className="flex flex-col items-center md:items-end w-full">
           <p className="text-sm text-slate-400">Síguenos</p>
           <div className="mt-3 flex gap-3 text-base">
-            {SOCIAL_LINKS.map((social) => (
+            {activeSocials.map((social) => (
               <motion.a
                 key={social.name}
                 whileHover={{ scale: 1.12, y: -2 }}
                 whileTap={{ scale: 0.94 }}
                 href={social.href}
-                target={social.href !== "#" ? "_blank" : undefined}
-                rel={social.href !== "#" ? "noopener noreferrer" : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={social.name}
                 className="w-10 h-10 grid place-items-center rounded-lg border border-white/10 hover:border-neon hover:text-neon transition bg-white/[0.02]"
               >

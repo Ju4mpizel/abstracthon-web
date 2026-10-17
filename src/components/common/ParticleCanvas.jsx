@@ -19,6 +19,9 @@ export default function ParticleCanvas() {
       pts = [],
       mouse = { x: -999, y: -999 };
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
 
     const resize = () => {
       const r = cv.getBoundingClientRect();
@@ -39,6 +42,8 @@ export default function ParticleCanvas() {
           s: Math.random() < 0.14 ? 3 + ((Math.random() * 2) | 0) : 0,
         }),
       );
+      // Con movimiento reducido no hay bucle: redibuja un cuadro estático
+      if (reduceMotion && frame) frame();
     };
 
     const poly = (p, n, size) => {
@@ -54,7 +59,7 @@ export default function ParticleCanvas() {
     };
 
     let animId;
-    const frame = () => {
+    function frame() {
       ctx.clearRect(0, 0, W, H);
       for (const p of pts) {
         const dx = p.x - mouse.x;
@@ -95,8 +100,10 @@ export default function ParticleCanvas() {
         }
       }
 
+      // shadowBlur es costoso: se desactiva en pantallas pequeñas
+      const glow = W >= 768 ? 12 : 0;
       for (const p of pts) {
-        ctx.shadowBlur = 12;
+        ctx.shadowBlur = glow;
         ctx.shadowColor = `rgb(${p.c})`;
         ctx.fillStyle = ctx.strokeStyle = `rgba(${p.c},.85)`;
         ctx.lineWidth = 1.1;
@@ -110,8 +117,8 @@ export default function ParticleCanvas() {
         }
       }
       ctx.shadowBlur = 0;
-      animId = requestAnimationFrame(frame);
-    };
+      if (!reduceMotion) animId = requestAnimationFrame(frame);
+    }
 
     const handleMouseMove = (e) => {
       const r = cv.getBoundingClientRect();
