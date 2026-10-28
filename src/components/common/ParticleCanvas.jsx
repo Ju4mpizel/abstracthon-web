@@ -8,11 +8,11 @@ export default function ParticleCanvas() {
     if (!cv) return;
     const ctx = cv.getContext("2d");
     const colors = [
-      "82,242,242",
-      "82,242,242",
-      "82,242,242",
-      "74,168,255",
-      "242,200,75",
+      "255,255,255",
+      "255,255,255",
+      "255,255,255",
+      "255,255,255",
+      "242,80,34",
     ];
     let W,
       H,
@@ -81,7 +81,7 @@ export default function ParticleCanvas() {
           const b = pts[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < 125) {
-            ctx.strokeStyle = `rgba(82,242,242,${(1 - d / 125) * 0.24})`;
+            ctx.strokeStyle = `rgba(255,255,255,${(1 - d / 125) * 0.16})`;
             ctx.lineWidth = 0.8;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
@@ -91,7 +91,7 @@ export default function ParticleCanvas() {
         }
         const md = Math.hypot(a.x - mouse.x, a.y - mouse.y);
         if (md < 190) {
-          ctx.strokeStyle = `rgba(242,200,75,${(1 - md / 190) * 0.5})`;
+          ctx.strokeStyle = `rgba(242,80,34,${(1 - md / 190) * 0.35})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);

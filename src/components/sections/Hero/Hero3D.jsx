@@ -41,7 +41,7 @@ export default function Hero3D() {
     // 1. Núcleo principal
     const core = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.65, 2),
-      wire(0x52f2f2, 0.8),
+      wire(0xffffff, 0.8),
     );
     g.add(core);
     const base = core.geometry.attributes.position.array.slice();
@@ -51,7 +51,7 @@ export default function Hero3D() {
       new THREE.Mesh(
         new THREE.IcosahedronGeometry(1.15, 1),
         new THREE.MeshBasicMaterial({
-          color: 0x124673,
+          color: 0x1a1a1a,
           transparent: true,
           opacity: 0.5,
         }),
@@ -61,15 +61,15 @@ export default function Hero3D() {
     // 3. Capa dorada interior
     const inner = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.22, 1),
-      wire(0xf2c84b, 0.6),
+      wire(0xf25022, 0.7),
     );
     g.add(inner);
 
     // 4. Anillos amplios
     const rings = [
-      [2.5, 0x52f2f2, 1.1, 0.2],
-      [2.95, 0xf2c84b, 0.5, -0.5],
-      [3.35, 0x4aa8ff, 1.4, 0.8],
+      [2.5, 0xffffff, 1.1, 0.2],
+      [2.95, 0xf25022, 0.5, -0.5],
+      [3.35, 0xffffff, 1.4, 0.8],
     ].map(([r, c, rx, ry]) => {
       const m = new THREE.Mesh(
         new THREE.TorusGeometry(r, 0.012, 8, 160),
@@ -105,7 +105,7 @@ export default function Hero3D() {
     const cloud = new THREE.Points(
       pg,
       new THREE.PointsMaterial({
-        color: 0x52f2f2,
+        color: 0xffffff,
         size: 0.035,
         transparent: true,
         opacity: 0.85,
@@ -115,10 +115,10 @@ export default function Hero3D() {
 
     // 6. Satélites
     const sats = [
-      [new THREE.OctahedronGeometry(0.26), 0xd93030, 2.7, 0.55],
-      [new THREE.TetrahedronGeometry(0.28), 0xf2c84b, 3.1, -0.4],
-      [new THREE.BoxGeometry(0.32, 0.32, 0.32), 0x52f2f2, 2.5, 0.7],
-      [new THREE.TorusKnotGeometry(0.15, 0.045, 48, 6), 0x4aa8ff, 3.4, -0.3],
+      [new THREE.OctahedronGeometry(0.26), 0xf25022, 2.7, 0.55],
+      [new THREE.TetrahedronGeometry(0.28), 0x7fba00, 3.1, -0.4],
+      [new THREE.BoxGeometry(0.32, 0.32, 0.32), 0xffb900, 2.5, 0.7],
+      [new THREE.TorusKnotGeometry(0.15, 0.045, 48, 6), 0x00a4ef, 3.4, -0.3],
     ].map(([geo, c, r, sp], i) => {
       const m = new THREE.Mesh(geo, wire(c, 0.95));
       g.add(m);

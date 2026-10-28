@@ -39,58 +39,58 @@ export default function Countdown() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 max-w-5xl mx-auto border border-white/15 bg-[#0a1e3e]/60 backdrop-blur-md rounded-2xl overflow-hidden shadow-[0_0_70px_-25px_rgba(82,242,242,0.45)]"
+        className="relative z-10 max-w-5xl mx-auto border border-line bg-surface rounded-2xl overflow-hidden"
       >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-5 sm:px-6 py-3.5 sm:py-4 border-b border-white/10">
-          <div className="flex items-center gap-2.5 text-white font-display text-xs sm:text-base">
-            <Timer className="text-neon w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-5 sm:px-6 py-3.5 sm:py-4 border-b border-line">
+          <div className="flex items-center gap-2.5 text-mark font-display text-xs sm:text-base">
+            <Timer className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
             <span>Cuenta regresiva · 21 de noviembre, 7:30 a. m.</span>
           </div>
-          <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-400">
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted">
             <span className="live-dot" /> Hora de Bolivia (UTC-4)
           </div>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4">
           <div className="py-5 sm:py-6 text-center">
-            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-white drop-shadow-[0_0_24px_rgba(82,242,242,0.45)]">
+            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-white">
               {timeLeft.days}
             </div>
-            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-slate-400">
+            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted">
               Días
             </div>
           </div>
 
-          <div className="py-5 sm:py-6 text-center border-l border-white/10">
-            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-white drop-shadow-[0_0_24px_rgba(82,242,242,0.45)]">
+          <div className="py-5 sm:py-6 text-center border-l border-line">
+            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-white">
               {timeLeft.hours}
             </div>
-            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-slate-400">
+            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted">
               Horas
             </div>
           </div>
 
-          <div className="py-5 sm:py-6 text-center border-t md:border-t-0 md:border-l border-white/10">
-            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-white drop-shadow-[0_0_24px_rgba(82,242,242,0.45)]">
+          <div className="py-5 sm:py-6 text-center border-t md:border-t-0 md:border-l border-line">
+            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-white">
               {timeLeft.minutes}
             </div>
-            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-slate-400">
+            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted">
               Minutos
             </div>
           </div>
 
-          <div className="py-5 sm:py-6 text-center border-t md:border-t-0 border-l border-white/10">
-            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-gold drop-shadow-[0_0_24px_rgba(242,200,75,0.45)]">
+          <div className="py-5 sm:py-6 text-center border-t md:border-t-0 border-l border-line">
+            <div className="font-display font-semibold text-3xl sm:text-5xl md:text-6xl text-white">
               {timeLeft.seconds}
             </div>
-            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-slate-400">
+            <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-muted">
               Segundos
             </div>
           </div>
         </div>
 
         {timeLeft.done && (
-          <p className="text-center text-gold font-medium pb-4 text-sm">
+          <p className="text-center text-mark font-medium pb-4 text-sm">
             ¡El evento ya comenzó!
           </p>
         )}

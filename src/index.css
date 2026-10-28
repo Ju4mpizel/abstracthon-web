@@ -1,21 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  --color-deep: #060e26;
-  --color-surf: #124673;
-  --color-neon: #52f2f2;
-  --color-gold: #f2c84b;
-  --color-red: #d93030;
+  --color-ink: #111111;
+  --color-surface: #1a1a1a;
+  --color-line: #2e2e2e;
+  --color-action: #f25022;
+  --color-confirm: #7fba00;
+  --color-mark: #ffb900;
+  --color-link: #00a4ef;
+  --color-copy: #c8c8c8;
+  --color-muted: #8a8a8a;
+
+  /* Alias del fondo anterior, ahora el negro del imagotipo. */
+  --color-deep: #111111;
+  --color-surf: #1a1a1a;
 
   --font-display: "Space Grotesk", sans-serif;
   --font-body: "Outfit", sans-serif;
 }
 
 :root {
-  --deep: #060e26;
-  --surf: #124673;
-  --neon: #52f2f2;
-  --gold: #f2c84b;
+  --ink: #111111;
+  --surface: #1a1a1a;
+  --action: #f25022;
+  --confirm: #7fba00;
+  --mark: #ffb900;
+  --link: #00a4ef;
+  --deep: #111111;
 }
 
 html {
@@ -24,31 +35,20 @@ html {
 }
 
 body {
-  background-color: var(--deep);
-  color: #dbe7f5;
+  background-color: var(--ink);
+  color: #c8c8c8;
   font-family: var(--font-body);
   overflow-x: hidden;
 }
 
-/* Grilla sutil del fondo */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(130, 190, 230, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(130, 190, 230, 0.12) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
   background-size: 64px 64px;
   -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000, transparent);
   mask-image: radial-gradient(70% 70% at 50% 40%, #000, transparent);
-  opacity: 0.45;
-}
-
-/* Botón Inscribirse elegante con borde giratorio (Sin transparencia ni cortes) */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  opacity: 0.55;
 }
 
 .cta-border {
@@ -56,67 +56,31 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1.5px;
+  min-height: 2.75rem;
   border-radius: 0.6rem;
   overflow: hidden;
   text-decoration: none;
-  background: transparent;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.cta-border::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(
-    transparent,
-    var(--neon) 20%,
-    transparent 40%,
-    var(--gold) 60%,
-    transparent 80%,
-    var(--neon)
-  );
-  animation: spin 3.5s linear infinite;
-  z-index: 0;
+  background: var(--action);
+  transition: background-color 0.2s ease;
 }
 
 .cta-border span {
   position: relative;
   z-index: 1;
   display: block;
-  /* Fondo completamente sólido para no dejar ver la rotación interior */
-  background: #060e26;
-  border-radius: calc(0.6rem - 1.5px);
-  padding: 0.45rem 1.2rem;
+  background: transparent;
+  border-radius: 0.6rem;
+  padding: 0.7rem 1.15rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--neon);
+  color: var(--ink);
   letter-spacing: 0.02em;
-  transition:
-    background-color 0.25s ease,
-    color 0.25s ease,
-    text-shadow 0.25s ease;
 }
 
 .cta-border:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 0 18px -2px rgba(82, 242, 242, 0.55),
-    0 0 10px rgba(242, 200, 75, 0.3);
+  background: #ff6a3d;
 }
 
-.cta-border:hover span {
-  background: #0b1d3d;
-  color: #ffffff;
-  text-shadow: 0 0 10px rgba(82, 242, 242, 0.8);
-}
-
-/* Enlaces del Nav */
 .nav-link {
   position: relative;
   transition: color 0.2s;
@@ -127,9 +91,9 @@ body {
   position: absolute;
   left: 0;
   bottom: -6px;
-  height: 1px;
+  height: 2px;
   width: 0;
-  background: var(--neon);
+  background: var(--action);
   transition: width 0.25s;
 }
 
@@ -145,11 +109,9 @@ body {
   width: 8px;
   height: 8px;
   border-radius: 9999px;
-  background: var(--neon);
-  box-shadow: 0 0 10px var(--neon);
+  background: var(--confirm);
 }
 
-/* Animación de desplazamiento continuo (Marquee y Bandas) */
 @keyframes marquee {
   from {
     transform: translateX(0);
@@ -171,19 +133,17 @@ body {
   animation: marquee 34s linear infinite reverse;
 }
 
-/* Estilos controlados para los logos de patrocinadores */
 .logo-item {
   height: 3.25rem;
-  max-width: 130px;
+  max-width: 180px;
   width: auto;
   object-fit: contain;
-  margin: 0 2.2rem;
-  filter: grayscale(1) brightness(0) invert(1);
-  opacity: 0.5;
-  transition:
-    filter 0.3s ease,
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  margin: 0 1.25rem;
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 0.45rem 0.85rem;
+  box-sizing: content-box;
+  transition: transform 0.3s ease;
 }
 
 @media (min-width: 640px) {
@@ -195,12 +155,9 @@ body {
 }
 
 .logo-item:hover {
-  filter: none;
-  opacity: 1;
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
-/* Titular masivo del Footer */
 .mega {
   font-family: var(--font-display);
   font-weight: 700;
@@ -208,9 +165,8 @@ body {
   font-size: clamp(2.4rem, 12vw, 13rem);
   text-align: center;
   color: transparent;
-  -webkit-text-stroke: 1.2px rgba(130, 190, 230, 0.35);
-  background: linear-gradient(var(--neon), var(--neon)) no-repeat 0 100% / 100%
-    0;
+  -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.28);
+  background: linear-gradient(#ffffff, #ffffff) no-repeat 0 100% / 100% 0;
   -webkit-background-clip: text;
   background-clip: text;
   transition:
@@ -220,18 +176,16 @@ body {
 
 .mega:hover {
   background-size: 100% 100%;
-  -webkit-text-stroke-color: var(--neon);
+  -webkit-text-stroke-color: #ffffff;
 }
 
-/* Accesibilidad: respeta la preferencia de movimiento reducido del sistema */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
   .animate-marquee,
-  .animate-marquee-reverse,
-  .cta-border::before {
+  .animate-marquee-reverse {
     animation: none;
   }
 }

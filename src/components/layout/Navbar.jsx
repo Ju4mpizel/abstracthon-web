@@ -15,7 +15,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-[#0a1e3e]/60 backdrop-blur-md border-b border-white/10">
+    <header className="fixed top-0 inset-x-0 z-50 bg-ink border-b border-line">
       <nav
         className="max-w-7xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between gap-2 sm:gap-4"
         aria-label="Principal"
@@ -44,7 +44,7 @@ export default function Navbar() {
           />
         </a>
 
-        <ul className="hidden lg:flex items-center gap-7 text-sm text-slate-300">
+        <ul className="hidden lg:flex items-center gap-7 text-sm text-copy">
           {NAV_LINKS.map(({ id, label }) => (
             <li key={id}>
               <a className="nav-link" href={`#${id}`}>
@@ -64,7 +64,7 @@ export default function Navbar() {
           </motion.a>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden w-10 h-10 grid place-items-center text-neon rounded-lg border border-white/15 bg-white/[0.02]"
+            className="lg:hidden w-11 h-11 grid place-items-center text-white rounded-lg border border-line"
             aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={isOpen}
           >
@@ -81,14 +81,14 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden px-6 py-5 border-t border-white/10 bg-[#060E26]/95 backdrop-blur-xl overflow-hidden"
+            className="lg:hidden px-6 py-5 border-t border-line bg-ink overflow-hidden"
           >
-            <ul className="flex flex-col gap-4 text-base font-medium text-slate-200">
+            <ul className="flex flex-col gap-4 text-base font-medium text-copy">
               {NAV_LINKS.map(({ id, label }) => (
                 <li key={id}>
                   <a
                     onClick={() => setIsOpen(false)}
-                    className="block py-1 hover:text-neon transition"
+                    className="block py-2 hover:text-action transition"
                     href={`#${id}`}
                   >
                     {label}

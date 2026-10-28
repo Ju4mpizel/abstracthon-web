@@ -1,5 +1,4 @@
 import ScrollProgress from "./components/common/ScrollProgress";
-import CustomCursor from "./components/common/CustomCursor";
 import ParticleCanvas from "./components/common/ParticleCanvas";
 
 import Navbar from "./components/layout/Navbar";
@@ -16,9 +15,8 @@ import CtaSection from "./components/sections/CtaSection";
 
 export default function App() {
   return (
-    <div className="relative min-h-screen bg-deep text-slate-100 overflow-x-hidden">
+    <div className="relative min-h-screen bg-ink text-copy overflow-x-hidden">
       <ScrollProgress />
-      <CustomCursor />
       <ParticleCanvas />
 
       <Navbar />

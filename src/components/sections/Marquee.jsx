@@ -14,11 +14,25 @@ export default function Marquee() {
       id="comunidad"
       className="py-14 sm:py-18 overflow-hidden select-none"
     >
-      <h2 className="text-center text-xs sm:text-sm tracking-[0.28em] text-slate-400 px-5 font-semibold">
+      <h2 className="text-center text-xs sm:text-sm tracking-[0.14em] sm:tracking-[0.28em] text-copy px-5 font-semibold">
         ORGANIZACIONES Y COMUNIDADES ALIADAS
       </h2>
+      <ul className="mt-6 grid grid-cols-1 gap-3 px-4 sm:hidden">
+        {SPONSORS.map((s) => (
+          <li
+            key={s.name}
+            className="h-20 rounded-xl bg-white grid place-items-center px-4"
+          >
+            <img
+              src={s.src}
+              alt={s.name}
+              className="max-h-14 w-auto max-w-full object-contain"
+            />
+          </li>
+        ))}
+      </ul>
       <div
-        className="mt-8 sm:mt-10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]"
+        className="mt-8 sm:mt-10 hidden sm:block overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_15%,black_85%,transparent)]"
         aria-label="Aliados"
       >
         <div className="animate-marquee items-center">
