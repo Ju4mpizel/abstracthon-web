@@ -28,6 +28,7 @@ export const EVENT_CONFIG = {
       query:
         "Universidad Católica Boliviana UCB Santa Cruz Campus Carretera al Norte",
       link: "https://maps.app.goo.gl/cGq8RF7bHTFowkxE6?g_st=ac",
+      photo: "/img/sedes/ucb-santa-cruz.webp",
       tone: "neon",
       placeKnown: true,
     },
@@ -40,6 +41,7 @@ export const EVENT_CONFIG = {
       query:
         "Universidad Privada del Valle Univalle Campus Tiquipaya Calle Guillermina Martínez",
       link: "https://www.google.com/maps/search/?api=1&query=Universidad%20Privada%20del%20Valle%20Campus%20Tiquipaya",
+      photo: "/img/sedes/univalle-tiquipaya.jpg",
       tone: "blue",
       placeKnown: true,
     },
@@ -51,6 +53,7 @@ export const EVENT_CONFIG = {
       addr: "Oruro, Bolivia · Plus Code 2V66+8V4",
       query: "2V66+8V4 Oruro, Bolivia",
       link: "https://maps.app.goo.gl/qkPSB4hS5sUnXZza7",
+      photo: "/img/sedes/oruro-sistemas.jpg",
       tone: "gold",
       placeKnown: true,
     },

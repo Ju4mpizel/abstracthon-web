@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Building2, CircleCheck, MapPin, ExternalLink } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { ExternalLink, MapPin } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { EVENT_CONFIG } from "../../config/eventData";
+import BoliviaMap from "./BoliviaMap";
 
 export default function Sedes() {
   const sedesKeys = Object.keys(EVENT_CONFIG.sedes);
@@ -22,106 +23,78 @@ export default function Sedes() {
           </h2>
           <div className="mt-2.5 sm:mt-3 h-1 w-14 sm:w-16 rounded bg-action" />
           <p className="mt-4 sm:mt-6 text-sm sm:text-base text-muted max-w-xl">
-            Elige tu ciudad para ver la sede.
+            Elige un departamento para ver la sede.
           </p>
         </motion.div>
 
-        <div className="mt-8 sm:mt-10 grid lg:grid-cols-12 gap-6 items-stretch">
-          {/* Selector y Ficha */}
-          <div className="lg:col-span-5 flex flex-col gap-4">
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2.5 sm:gap-3">
+        <div className="mt-8 sm:mt-10 grid items-start gap-6 lg:grid-cols-2 lg:gap-10">
+          <div>
+            <div className="rounded-xl border border-line bg-surface p-3 sm:p-5">
+              <BoliviaMap activeKey={activeKey} onSelect={setActiveKey} />
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
               {sedesKeys.map((key) => {
-                const s = EVENT_CONFIG.sedes[key];
-                const isActive = activeKey === key;
+                const sede = EVENT_CONFIG.sedes[key];
+                const active = key === activeKey;
                 return (
                   <button
                     key={key}
+                    type="button"
                     onClick={() => setActiveKey(key)}
-                    className={`w-full text-left flex items-center gap-3 p-3 sm:p-4 rounded-xl border transition-all duration-200 min-h-12 ${
-                      isActive
-                        ? "border-line border-l-[3px] border-l-action bg-surface"
-                        : "border-line bg-ink hover:bg-surface"
+                    aria-pressed={active}
+                    className={`min-h-11 rounded-full px-4 text-sm font-medium ${
+                      active
+                        ? "bg-action text-ink"
+                        : "border border-line text-copy hover:text-white"
                     }`}
                   >
-                    <Building2
-                      className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 ${isActive ? "text-action" : "text-white/45"}`}
-                    />
-                    <span className="min-w-0">
-                      <span className="block font-display text-base sm:text-lg text-white font-semibold truncate">
-                        {s.name}
-                      </span>
-                      <span className="block text-xs sm:text-sm text-muted truncate">
-                        {s.city}
-                      </span>
-                    </span>
-                    <CircleCheck
-                      className={`ml-auto w-4 h-4 sm:w-5 sm:h-5 text-action shrink-0 ${isActive ? "opacity-100" : "opacity-0"}`}
-                    />
+                    {sede.short}
                   </button>
                 );
               })}
             </div>
+            <p className="mt-3 text-xs text-muted">
+              Mapa de Sageo, licencia CC BY-SA 4.0.
+            </p>
+          </div>
 
-            {/* Ficha con animación de cambio */}
-            <AnimatePresence mode="wait">
-              {currentSede && (
-                <motion.div
-                  key={activeKey}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.25 }}
-                  className="border border-line bg-surface rounded-xl p-5 sm:p-6 flex-1 flex flex-col justify-between"
-                >
-                  <div>
-                    <span className="inline-flex items-center gap-2 text-xs sm:text-sm text-confirm font-medium">
-                      <span className="w-2 h-2 rounded-full bg-confirm" />{" "}
-                      {currentSede.placeKnown
-                        ? "Sede confirmada"
-                        : "Ciudad confirmada"}
-                    </span>
-                    <h3 className="mt-2.5 sm:mt-3 font-display text-xl sm:text-2xl font-semibold text-white">
-                      {currentSede.name}
-                    </h3>
-                    <p className="mt-1.5 sm:mt-2 text-sm sm:text-base text-copy">
-                      {currentSede.venue}
-                    </p>
-                    <p className="mt-2 text-xs sm:text-sm text-muted flex items-start gap-2">
-                      <MapPin className="shrink-0 w-4 h-4 mt-0.5 text-muted" />
-                      <span>{currentSede.addr}</span>
-                    </p>
-                  </div>
-                  <motion.a
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+          <AnimatePresence mode="wait">
+            {currentSede && (
+              <motion.div
+                key={activeKey}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25 }}
+                className="overflow-hidden rounded-xl border border-line bg-surface"
+              >
+                <img
+                  src={currentSede.photo}
+                  alt={currentSede.venue}
+                  className="aspect-[4/3] w-full object-cover"
+                />
+                <div className="p-5 sm:p-6">
+                  <h3 className="font-display text-xl font-semibold text-white sm:text-2xl">
+                    {currentSede.name}
+                  </h3>
+                  <p className="mt-1.5 text-sm text-copy sm:text-base">{currentSede.venue}</p>
+                  <p className="mt-2 flex items-start gap-2 text-xs text-muted sm:text-sm">
+                    <MapPin className="mt-0.5 h-4 w-4 shrink-0" />
+                    <span>{currentSede.addr}</span>
+                  </p>
+                  <a
                     href={currentSede.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-action text-ink px-5 py-3 min-h-12 font-medium text-sm sm:text-base"
+                    className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-lg bg-action px-5 py-3 text-sm font-medium text-ink sm:text-base"
                   >
-                    {currentSede.placeKnown
-                      ? "Ver ubicación en Maps"
-                      : "Ver la ciudad en Maps"}{" "}
-                    <ExternalLink className="w-4 h-4" />
-                  </motion.a>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Mapa */}
-          <div className="lg:col-span-7">
-            <div className="relative border border-line rounded-xl overflow-hidden bg-surface h-[240px] sm:h-[400px] lg:h-full min-h-[240px]">
-              {currentSede && (
-                <iframe
-                  title={currentSede.name}
-                  src={`https://www.google.com/maps?q=${encodeURIComponent(currentSede.query)}&z=16&output=embed`}
-                  className="absolute inset-0 w-full h-full border-0 [filter:invert(92%)_hue-rotate(180deg)_saturate(0.75)_contrast(0.92)]"
-                  loading="lazy"
-                />
-              )}
-            </div>
-          </div>
+                    Ver en Google Maps
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </section>

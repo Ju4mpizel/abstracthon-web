@@ -133,29 +133,66 @@ body {
   animation: marquee 34s linear infinite reverse;
 }
 
+.bolivia-host:hover {
+  fill: #ff8a5c;
+}
+
+.bolivia-host:focus-visible {
+  outline: 4px solid #ffb08a;
+  outline-offset: 6px;
+}
+
+.logo-scroller {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.logo-scroller::-webkit-scrollbar {
+  display: none;
+}
+
 .logo-item {
   height: 3.25rem;
-  max-width: 180px;
+  max-width: 11rem;
   width: auto;
   object-fit: contain;
-  margin: 0 1.25rem;
+  margin: 0;
   background: #fff;
   border-radius: 0.75rem;
   padding: 0.45rem 0.85rem;
   box-sizing: content-box;
-  transition: transform 0.3s ease;
+}
+
+.logo-item-bloom {
+  width: 11rem;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-item-bloom img {
+  width: 110%;
+  height: 110%;
+  max-width: none;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: 44% 50%;
 }
 
 @media (min-width: 640px) {
   .logo-item {
     height: 4rem;
-    max-width: 160px;
-    margin: 0 3rem;
+    max-width: 13rem;
   }
-}
 
-.logo-item:hover {
-  transform: scale(1.06);
+  .logo-item-bloom {
+    width: 13rem;
+  }
 }
 
 .mega {
