@@ -211,8 +211,10 @@ export default function Hero() {
             <MapPin className="text-gold shrink-0 w-6 h-6" />
             <div>
               <dt className="text-xs sm:text-sm text-slate-400">Sedes</dt>
-              <dd className="font-display text-base sm:text-lg text-white font-medium">
-                Santa Cruz · Oruro
+              <dd className="font-display text-base sm:text-lg text-white font-medium leading-snug">
+                {Object.values(EVENT_CONFIG.sedes)
+                  .map((sede) => sede.short)
+                  .join(" · ")}
               </dd>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { EVENT_CONFIG, REGISTER_URL, linkProps } from "../../config/eventData";
+import { REGISTER_URL, linkProps } from "../../config/eventData";
 
 const NAV_LINKS = [
   { id: "sobre", label: "Sobre el evento" },
@@ -35,16 +35,13 @@ export default function Navbar() {
           />
           <span className="hidden sm:block w-px h-7 sm:h-9 bg-white/15" />
           <img
-            src="/img/comunidad.png"
-            alt="Comunidad"
-            className="h-8 sm:h-10 md:h-12 w-auto object-contain"
+            src="/img/mlsa-university-community.png"
+            alt="MLSA University Community"
+            className="h-10 sm:h-12 md:h-14 w-auto object-contain"
             onError={(e) => {
               e.currentTarget.style.display = "none";
             }}
           />
-          <span className="hidden xl:block text-[11px] leading-tight text-slate-400 max-w-[170px]">
-            {EVENT_CONFIG.organizer}
-          </span>
         </a>
 
         <ul className="hidden lg:flex items-center gap-7 text-sm text-slate-300">

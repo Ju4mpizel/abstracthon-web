@@ -48,9 +48,9 @@ export default function Footer() {
               }}
             />
             <img
-              src="/img/comunidad.png"
-              alt="Comunidad"
-              className="h-9 sm:h-10 md:h-12 w-auto object-contain"
+              src="/img/mlsa-university-community.png"
+              alt="MLSA University Community"
+              className="h-12 sm:h-14 md:h-16 w-auto object-contain"
               onError={(e) => {
                 e.currentTarget.style.display = "none";
               }}

@@ -1,11 +1,12 @@
+import { EVENT_CONFIG } from "../../config/eventData";
+
 export default function DiagonalBands() {
   const words1 = ["Abstráete", "Crea", "Conecta", "Construye"];
   const words2 = [
     "Abstracthon 2026",
     "Bolivia",
     "21 de noviembre",
-    "Santa Cruz",
-    "Oruro",
+    ...Object.values(EVENT_CONFIG.sedes).map((sede) => sede.short),
   ];
 
   // Renderiza una palabra con el separador geométrico estilo rombo

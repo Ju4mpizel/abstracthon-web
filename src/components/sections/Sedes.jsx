@@ -3,6 +3,12 @@ import { Building2, CircleCheck, MapPin, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { EVENT_CONFIG } from "../../config/eventData";
 
+const TONE = {
+  neon: "text-neon",
+  gold: "text-gold",
+  blue: "text-[#4aa8ff]",
+};
+
 export default function Sedes() {
   const sedesKeys = Object.keys(EVENT_CONFIG.sedes);
   const [activeKey, setActiveKey] = useState(sedesKeys[0] || "scz");
@@ -29,14 +35,14 @@ export default function Sedes() {
           </h2>
           <div className="mt-2.5 sm:mt-3 h-1 w-14 sm:w-16 rounded bg-gold shadow-[0_0_12px_rgba(242,200,75,0.7)]" />
           <p className="mt-4 sm:mt-6 text-sm sm:text-base text-slate-400 max-w-xl">
-            Elige tu ciudad para ver la ubicación exacta de la sede.
+            Elige tu ciudad para ver la sede.
           </p>
         </motion.div>
 
         <div className="mt-8 sm:mt-10 grid lg:grid-cols-12 gap-6 items-stretch">
           {/* Selector y Ficha */}
           <div className="lg:col-span-5 flex flex-col gap-4">
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-1 gap-2.5 sm:gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2.5 sm:gap-3">
               {sedesKeys.map((key) => {
                 const s = EVENT_CONFIG.sedes[key];
                 const isActive = activeKey === key;
@@ -51,7 +57,7 @@ export default function Sedes() {
                     }`}
                   >
                     <Building2
-                      className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 ${key === "scz" ? "text-neon" : "text-gold"}`}
+                      className={`w-5 h-5 sm:w-6 sm:h-6 shrink-0 ${TONE[s.tone] || "text-neon"}`}
                     />
                     <span className="min-w-0">
                       <span className="block font-display text-base sm:text-lg text-white font-semibold truncate">
@@ -83,7 +89,9 @@ export default function Sedes() {
                   <div>
                     <span className="inline-flex items-center gap-2 text-xs sm:text-sm text-neon font-medium">
                       <span className="w-2 h-2 rounded-full bg-neon shadow-[0_0_8px_var(--neon)]" />{" "}
-                      Sede confirmada
+                      {currentSede.placeKnown
+                        ? "Sede confirmada"
+                        : "Ciudad confirmada"}
                     </span>
                     <h3 className="mt-2.5 sm:mt-3 font-display text-xl sm:text-2xl font-semibold text-white">
                       {currentSede.name}
@@ -104,7 +112,10 @@ export default function Sedes() {
                     rel="noopener noreferrer"
                     className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-neon text-deep px-5 py-3 font-medium text-sm sm:text-base shadow-[0_0_20px_rgba(82,242,242,0.4)]"
                   >
-                    Ver ubicación en Maps <ExternalLink className="w-4 h-4" />
+                    {currentSede.placeKnown
+                      ? "Ver ubicación en Maps"
+                      : "Ver la ciudad en Maps"}{" "}
+                    <ExternalLink className="w-4 h-4" />
                   </motion.a>
                 </motion.div>
               )}
