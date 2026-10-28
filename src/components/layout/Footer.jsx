@@ -24,7 +24,7 @@ export default function Footer() {
   const activeSocials = SOCIAL_LINKS.filter((s) => s.href !== "#");
 
   return (
-    <footer className="border-t border-white/10 bg-[#0a1e3e]/40 backdrop-blur-md overflow-hidden w-full">
+    <footer className="border-t border-line bg-ink overflow-hidden w-full">
       {/* Texto Gigante Centrado */}
       <div className="w-full overflow-hidden flex justify-center items-center pt-10 sm:pt-14 pb-2 sm:pb-4 px-3">
         <div
@@ -48,15 +48,15 @@ export default function Footer() {
               }}
             />
             <img
-              src="/img/comunidad.png"
-              alt="Comunidad"
-              className="h-9 sm:h-10 md:h-12 w-auto object-contain"
+              src="/img/mlsa-university-community.png"
+              alt="MLSA University Community"
+              className="h-12 sm:h-14 md:h-16 w-auto object-contain"
               onError={(e) => {
                 e.currentTarget.style.display = "none";
               }}
             />
           </div>
-          <p className="mt-4 text-xs sm:text-sm text-slate-400 max-w-xs leading-relaxed">
+          <p className="mt-4 text-xs sm:text-sm text-muted max-w-xs leading-relaxed">
             Organizado por{" "}
             <strong className="text-white font-medium">
               {EVENT_CONFIG.organizer}
@@ -69,29 +69,29 @@ export default function Footer() {
           aria-label="Pie de página"
           className="w-full text-center md:text-left"
         >
-          <ul className="grid grid-cols-2 gap-3 text-sm text-slate-300">
+          <ul className="grid grid-cols-2 gap-3 text-sm text-copy">
             <li>
-              <a className="hover:text-neon transition" href="#sobre">
+              <a className="hover:text-link transition" href="#sobre">
                 Sobre el evento
               </a>
             </li>
             <li>
-              <a className="hover:text-neon transition" href="#galeria">
+              <a className="hover:text-link transition" href="#galeria">
                 Galería
               </a>
             </li>
             <li>
-              <a className="hover:text-neon transition" href="#sedes">
+              <a className="hover:text-link transition" href="#sedes">
                 Sedes
               </a>
             </li>
             <li>
-              <a className="hover:text-neon transition" href="#countdown">
+              <a className="hover:text-link transition" href="#countdown">
                 Cuenta regresiva
               </a>
             </li>
             <li className="col-span-2 sm:col-span-1">
-              <a className="hover:text-neon transition" href="#comunidad">
+              <a className="hover:text-link transition" href="#comunidad">
                 Comunidad
               </a>
             </li>
@@ -100,7 +100,7 @@ export default function Footer() {
 
         {/* Redes Sociales */}
         <div className="flex flex-col items-center md:items-end w-full">
-          <p className="text-sm text-slate-400">Síguenos</p>
+          <p className="text-sm text-muted">Síguenos</p>
           <div className="mt-3 flex gap-3 text-base">
             {activeSocials.map((social) => (
               <motion.a
@@ -111,7 +111,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.name}
-                className="w-10 h-10 grid place-items-center rounded-lg border border-white/10 hover:border-neon hover:text-neon transition bg-white/[0.02]"
+                className="w-11 h-11 grid place-items-center rounded-lg border border-line hover:border-link hover:text-link transition"
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
                   <path d={social.path} />
@@ -122,7 +122,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <p className="border-t border-white/10 text-center text-xs text-slate-500 py-6 px-4">
+      <p className="border-t border-line text-center text-xs text-muted py-6 px-4">
         © 2026 Abstracthon · Bolivia. Todos los derechos reservados.
       </p>
     </footer>

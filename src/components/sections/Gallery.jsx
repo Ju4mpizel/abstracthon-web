@@ -115,9 +115,9 @@ export default function Gallery() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-display">
               Así se vive una hackathon
             </h2>
-            <div className="mt-2.5 sm:mt-3 h-1 w-14 sm:w-16 rounded bg-gold shadow-[0_0_12px_rgba(242,200,75,0.7)]" />
+            <div className="mt-2.5 sm:mt-3 h-1 w-14 sm:w-16 rounded bg-action" />
           </div>
-          <p className="text-slate-400 text-sm sm:text-base max-w-md">
+          <p className="text-muted text-sm sm:text-base max-w-md">
             Equipos, mentores y comunidad construyendo juntos. Imágenes de
             ediciones anteriores y de eventos similares.
           </p>
@@ -135,9 +135,9 @@ export default function Gallery() {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.06, duration: 0.5 }}
                 onClick={() => setActiveImg(item.img)}
-                className={`relative overflow-hidden rounded-xl border border-white/15 cursor-zoom-in group bg-[#0a1a38] transition-colors duration-300 hover:border-neon/60 ${item.spanClass}`}
+                className={`relative overflow-hidden rounded-xl border border-line cursor-zoom-in group bg-surface transition-colors duration-300 hover:border-white/40 ${item.spanClass}`}
               >
-                <div className="absolute inset-0 grid place-items-center text-neon/40 bg-gradient-to-br from-surf to-deep">
+                <div className="absolute inset-0 grid place-items-center text-white/30 bg-surface">
                   <Camera className="w-8 h-8 sm:w-9 sm:h-9" />
                 </div>
 
@@ -151,8 +151,8 @@ export default function Gallery() {
                   }}
                 />
 
-                <figcaption className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 pt-6 sm:pt-8 bg-gradient-to-t from-deep via-deep/80 to-transparent text-white text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 translate-y-0 sm:translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neon shrink-0" />
+                <figcaption className="absolute inset-x-0 bottom-0 p-2.5 sm:p-3 pt-6 sm:pt-8 bg-gradient-to-t from-ink via-ink/80 to-transparent text-white text-xs sm:text-sm flex items-center gap-1.5 sm:gap-2 translate-y-0 sm:translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white shrink-0" />
                   <span className="truncate">{item.cap}</span>
                 </figcaption>
               </motion.figure>
@@ -169,11 +169,11 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setActiveImg(null)}
-            className="fixed inset-0 z-[120] grid place-items-center bg-[#030816]/95 backdrop-blur-md p-4 sm:p-6"
+            className="fixed inset-0 z-[120] grid place-items-center bg-ink/95 p-4 sm:p-6"
           >
             <button
               onClick={() => setActiveImg(null)}
-              className="absolute top-4 right-4 sm:top-5 sm:right-5 w-11 h-11 grid place-items-center rounded-full border border-white/20 text-white hover:text-neon transition bg-white/[0.05]"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 w-11 h-11 grid place-items-center rounded-full border border-line text-white bg-surface"
               aria-label="Cerrar modal"
             >
               <X className="w-6 h-6" />
@@ -185,7 +185,7 @@ export default function Gallery() {
               transition={{ duration: 0.25 }}
               src={activeImg}
               alt="Detalle"
-              className="max-w-full sm:max-w-[1100px] max-h-[75vh] sm:max-h-[85vh] rounded-xl border border-white/20 object-contain shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+              className="max-w-full sm:max-w-[1100px] max-h-[75vh] sm:max-h-[85vh] rounded-xl border border-line object-contain"
               onClick={(e) => e.stopPropagation()}
             />
           </motion.div>

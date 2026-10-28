@@ -21,20 +21,41 @@ export const EVENT_CONFIG = {
   sedes: {
     scz: {
       name: "Sede Santa Cruz",
+      short: "Santa Cruz",
       city: "Santa Cruz de la Sierra",
       venue: "Universidad Católica Boliviana (UCB)",
       addr: "Campus UCB, Carretera al Norte, Santa Cruz de la Sierra",
       query:
         "Universidad Católica Boliviana UCB Santa Cruz Campus Carretera al Norte",
       link: "https://maps.app.goo.gl/cGq8RF7bHTFowkxE6?g_st=ac",
+      photo: "/img/sedes/ucb-santa-cruz.webp",
+      tone: "neon",
+      placeKnown: true,
+    },
+    cbb: {
+      name: "Sede Cochabamba",
+      short: "Cochabamba",
+      city: "Cochabamba",
+      venue: "Universidad Privada del Valle (Univalle)",
+      addr: "Campus Tiquipaya, Calle Guillermina Martínez s/n, Tiquipaya",
+      query:
+        "Universidad Privada del Valle Univalle Campus Tiquipaya Calle Guillermina Martínez",
+      link: "https://www.google.com/maps/search/?api=1&query=Universidad%20Privada%20del%20Valle%20Campus%20Tiquipaya",
+      photo: "/img/sedes/univalle-tiquipaya.jpg",
+      tone: "blue",
+      placeKnown: true,
     },
     oru: {
       name: "Sede Oruro",
+      short: "Oruro",
       city: "Departamento de Oruro",
       venue: "Carrera de Ingeniería de Sistemas e Informática",
       addr: "Oruro, Bolivia · Plus Code 2V66+8V4",
       query: "2V66+8V4 Oruro, Bolivia",
       link: "https://maps.app.goo.gl/qkPSB4hS5sUnXZza7",
+      photo: "/img/sedes/oruro-sistemas.jpg",
+      tone: "gold",
+      placeKnown: true,
     },
   },
 };

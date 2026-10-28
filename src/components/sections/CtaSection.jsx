@@ -15,7 +15,7 @@ export default function CtaSection() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 max-w-4xl mx-auto w-full flex flex-col items-center"
       >
-        <h2 className="font-display font-bold text-white leading-tight text-2xl sm:text-4xl md:text-5xl lg:text-6xl max-w-3xl drop-shadow-[0_0_35px_rgba(82,242,242,0.25)]">
+        <h2 className="font-display font-bold text-white leading-tight text-2xl sm:text-4xl md:text-5xl lg:text-6xl max-w-3xl">
           ¿Te atreves a convertir tu idea en realidad?
         </h2>
 
@@ -24,7 +24,7 @@ export default function CtaSection() {
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             {...linkProps(REGISTER_URL)}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-neon text-deep font-semibold px-6 py-3.5 w-full sm:w-auto shadow-[0_0_25px_rgba(82,242,242,0.5)] hover:shadow-[0_0_35px_rgba(82,242,242,0.8)] transition"
+            className="inline-flex items-center justify-center gap-2 rounded-lg bg-action text-ink font-semibold px-6 py-3.5 min-h-12 w-full sm:w-auto transition hover:bg-[#ff6a3d]"
           >
             ¡Quiero Participar! <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
           </motion.a>
@@ -32,7 +32,7 @@ export default function CtaSection() {
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             href="#sedes"
-            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 hover:border-neon text-slate-100 hover:text-neon px-6 py-3.5 w-full sm:w-auto transition"
+            className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/40 hover:border-action text-white px-6 py-3.5 min-h-12 w-full sm:w-auto transition"
           >
             <MapPin className="w-4 h-4 sm:w-5 sm:h-5" /> Ver Sedes Presenciales
           </motion.a>
