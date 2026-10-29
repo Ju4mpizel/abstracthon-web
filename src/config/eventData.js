@@ -1,13 +1,9 @@
-// Enlace de inscripción. Mientras no exista el formulario, apunta a la sección de sedes.
-// Cuando lo tengas, reemplázalo por la URL completa (ej: "https://forms.office.com/...").
-export const REGISTER_URL = "#sedes";
+export const REGISTER_URL = "https://forms.gle/wzTHJKXZKx62z87m8";
 
-// Props para <a>: abre en pestaña nueva solo si el enlace es externo.
 export const linkProps = (url) =>
   /^https?:\/\//.test(url)
     ? { href: url, target: "_blank", rel: "noopener noreferrer" }
     : { href: url };
-
 export const EVENT_CONFIG = {
   name: "ABSTRACTHON",
   targetDate: "2026-11-21T07:30:00-04:00", // Hora Bolivia (UTC-4)

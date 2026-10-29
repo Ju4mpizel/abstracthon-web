@@ -11,6 +11,7 @@ import About from "./components/sections/About";
 import Gallery from "./components/sections/Gallery";
 import Sedes from "./components/sections/Sedes";
 import Marquee from "./components/sections/Marquee";
+import RegistrationSection from "./components/sections/RegistrationSection";
 import CtaSection from "./components/sections/CtaSection";
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
         <Gallery />
         <Sedes />
         <Marquee />
+        <RegistrationSection />
         <CtaSection />
       </main>
 
