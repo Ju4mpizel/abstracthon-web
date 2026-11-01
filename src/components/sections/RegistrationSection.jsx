@@ -24,7 +24,7 @@ const PRICES = [
 ];
 
 const DISCOUNTS = [
-  "Bs 5 de descuento para equipos de 5 integrantes",
+  "Bs 10 de descuento para equipos de 5 integrantes",
   "Descuento especial para miembros de comunidades aliadas",
 ];
 
