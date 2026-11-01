@@ -10,6 +10,7 @@ import Countdown from "./components/sections/Countdown";
 import About from "./components/sections/About";
 import Gallery from "./components/sections/Gallery";
 import Sedes from "./components/sections/Sedes";
+import PrizesSection from "./components/sections/PrizesSection";
 import Marquee from "./components/sections/Marquee";
 import RegistrationSection from "./components/sections/RegistrationSection";
 import CtaSection from "./components/sections/CtaSection";
@@ -29,6 +30,7 @@ export default function App() {
         <About />
         <Gallery />
         <Sedes />
+        <PrizesSection />
         <Marquee />
         <RegistrationSection />
         <CtaSection />

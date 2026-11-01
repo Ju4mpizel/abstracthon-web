@@ -13,7 +13,6 @@ import {
   linkProps,
 } from "../../../config/eventData";
 
-// Three.js se descarga aparte para no bloquear el primer render
 const Hero3D = lazy(() => import("./Hero3D"));
 
 const SCRAMBLE_CHARS = "01<>/{}#*+=ABCDEFGHJKLMNPRSTUVXYZ";
@@ -33,7 +32,6 @@ function ScrambleChar({ char, isOutline }) {
   const [busy, setBusy] = useState(false);
   const intervalRef = useRef(null);
 
-  // Limpia el intervalo si el componente se desmonta a mitad de la animación
   useEffect(() => () => clearInterval(intervalRef.current), []);
 
   const handleMouseEnter = () => {
@@ -135,12 +133,12 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Columna Derecha con Hero3D */}
+        {/* Columna Derecha con Hero3D contenido y perfectamente centrado */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="lg:col-span-5 relative w-full h-[280px] sm:h-[460px] lg:h-[560px] flex items-center justify-center"
+          className="lg:col-span-5 relative w-full h-[340px] sm:h-[460px] lg:h-[560px] flex items-center justify-center overflow-hidden"
         >
           <Suspense fallback={null}>
             <Hero3D />
@@ -148,7 +146,7 @@ export default function Hero() {
 
           <a
             {...linkProps(REGISTER_URL)}
-            className="absolute left-2 sm:left-4 bottom-2 sm:bottom-4 lg:-left-6 w-[116px] h-[116px] sm:w-[124px] sm:h-[124px] grid place-items-center rounded-full text-action bg-ink border border-line hover:border-action transition duration-300 z-20 group"
+            className="absolute left-2 sm:left-4 bottom-2 sm:bottom-4 lg:-left-6 w-[104px] h-[104px] sm:w-[124px] sm:h-[124px] grid place-items-center rounded-full text-action bg-ink border border-line hover:border-action transition duration-300 z-20 group scale-90 sm:scale-100"
             aria-label="Regístrate ahora"
           >
             <svg
@@ -173,7 +171,7 @@ export default function Hero() {
                 </textPath>
               </text>
             </svg>
-            <span className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-action text-ink grid place-items-center group-hover:scale-110 group-hover:rotate-45 transition duration-300">
+            <span className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-action text-ink grid place-items-center group-hover:scale-110 group-hover:rotate-45 transition duration-300">
               <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
             </span>
           </a>

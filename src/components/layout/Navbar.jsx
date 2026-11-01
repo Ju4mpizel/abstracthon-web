@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { id: "sobre", label: "Sobre el evento" },
   { id: "galeria", label: "Galería" },
   { id: "sedes", label: "Sedes" },
+  { id: "premios", label: "Premios" },
   { id: "registro", label: "Registro" },
   { id: "countdown", label: "Cuenta regresiva" },
   { id: "comunidad", label: "Comunidad" },
@@ -45,7 +46,7 @@ export default function Navbar() {
           />
         </a>
 
-        <ul className="hidden lg:flex items-center gap-5 xl:gap-7 text-sm text-copy">
+        <ul className="hidden lg:flex items-center gap-4 xl:gap-6 text-[13px] xl:text-sm text-copy">
           {NAV_LINKS.map(({ id, label }) => (
             <li key={id}>
               <a className="nav-link" href={`#${id}`}>

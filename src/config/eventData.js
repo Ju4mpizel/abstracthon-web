@@ -4,6 +4,7 @@ export const linkProps = (url) =>
   /^https?:\/\//.test(url)
     ? { href: url, target: "_blank", rel: "noopener noreferrer" }
     : { href: url };
+
 export const EVENT_CONFIG = {
   name: "ABSTRACTHON",
   targetDate: "2026-11-21T07:30:00-04:00", // Hora Bolivia (UTC-4)
@@ -13,6 +14,86 @@ export const EVENT_CONFIG = {
     "Desafía la lógica convencional y construye soluciones de alto impacto junto a la comunidad de tecnología más apasionada.",
   aboutText:
     "Abstracthon es más que una hackathon: es un espacio para imaginar, crear y construir soluciones frente a desafíos reales. Reúne a personas con ideas, talento y ganas de generar un cambio, impulsándolas a colaborar, compartir conocimientos y convertir sus propuestas en soluciones innovadoras mediante la tecnología. Aquí, cada idea es el comienzo de algo más grande. ¿Te atreves a convertir la tuya en realidad?",
+
+  pricing: {
+    presencial: "Bs 30",
+    virtual: "Bs 15",
+    discountAmount: "Bs 10",
+    discountRule:
+      "Descuento de Bs 10 sobre el total para equipos de 3 a 5 integrantes o comunidades aliadas.",
+    teamRule: "Equipos de 3 a 5 integrantes (o individual)",
+  },
+
+  prizes: [
+    {
+      sponsor: "Bloomtech",
+      highlight: "$200 USD + Pasantía",
+      title: "Financiamiento & Crecimiento",
+      items: [
+        "$200 USD de financiamiento para desarrollar el proyecto",
+        "Mentorías personalizadas y guías de desarrollo",
+        "Pasantía remota con oportunidad de contratación",
+      ],
+      badge: "Premio Principal",
+      tone: "action", // #f25022
+    },
+    {
+      sponsor: "Comunidad Abstracthon",
+      highlight: "Bs 150 – 200",
+      title: "Premio Económico en Efectivo",
+      items: [
+        "Incentivo económico directo en efectivo",
+        "Certificados oficiales de ganador (Comunidad + Bloomtech)",
+      ],
+      badge: "Efectivo",
+      tone: "confirm", // #7fba00
+    },
+    {
+      sponsor: "Joddy",
+      highlight: "Pasantía Remota",
+      title: "Inserción Laboral Tech",
+      items: [
+        "Pasantía remota en proyectos tecnológicos reales",
+        "Networking directo con profesionales de la industria",
+      ],
+      badge: "Talento",
+      tone: "link", // #00a4ef
+    },
+    {
+      sponsor: "Majup Learn Academy",
+      highlight: "Educación & Cursos",
+      title: "Formación Profesional",
+      items: [
+        "1 mes gratis de acceso para todos los ganadores",
+        "Descuentos exclusivos en cursos para todos los participantes",
+      ],
+      badge: "Formación",
+      tone: "mark", // #ffb900
+    },
+  ],
+
+  tracks: [
+    {
+      id: "finanzas",
+      name: "Finanzas",
+      desc: "Soluciones que respondan a retos financieros: pagar, ahorrar, cobrar o entender y gestionar mejor las finanzas.",
+    },
+    {
+      id: "educacion",
+      name: "Educación",
+      desc: "Propuestas que transformen la forma de aprender, enseñar y acceder a formación técnica de calidad.",
+    },
+    {
+      id: "comunicacion",
+      name: "Comunicación",
+      desc: "Herramientas para conectar comunidades, coordinar grupos y mejorar el flujo e intercambio de información.",
+    },
+    {
+      id: "ayuda-tecnologica",
+      name: "Ayuda Tecnológica",
+      desc: "Proyectos interdisciplinarios que fusionan 2 o más de los tracks principales para resolver retos de alto impacto.",
+    },
+  ],
 
   sedes: {
     scz: {

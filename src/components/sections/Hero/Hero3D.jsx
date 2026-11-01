@@ -10,7 +10,11 @@ export default function Hero3D() {
 
     let renderer;
     try {
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance",
+      });
     } catch {
       return;
     }
@@ -19,13 +23,22 @@ export default function Hero3D() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    host.appendChild(renderer.domElement);
+    // Límite de pixelRatio a 2 para máxima nitidez sin sobrecalentar el móvil
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(dpr);
+
+    // Asignar estilos estrictos al canvas para que nunca desborde en móvil
+    const canvas = renderer.domElement;
+    canvas.style.display = "block";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    host.appendChild(canvas);
 
     const scene = new THREE.Scene();
-    // Mayor FOV y distancia para no cortar los anillos
-    const cam = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
-    cam.position.set(0, 0, 9.8);
+    const cam = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
 
     const g = new THREE.Group();
     scene.add(g);
@@ -58,7 +71,7 @@ export default function Hero3D() {
       ),
     );
 
-    // 3. Capa dorada interior
+    // 3. Capa naranja interior
     const inner = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1.22, 1),
       wire(0xf25022, 0.7),
@@ -85,7 +98,7 @@ export default function Hero3D() {
     });
 
     // 5. Nube de estrellas/partículas
-    const N = 460;
+    const N = 420;
     const pos = new Float32Array(N * 3);
     for (let i = 0; i < N; i++) {
       const r = 2.2 + Math.random() * 2.0;
@@ -125,12 +138,26 @@ export default function Hero3D() {
       return { m, r, sp, ph: i * 1.7 };
     });
 
+    // Ajuste responsivo de viewport y distancia focal
     const handleResize = () => {
       const w = host.clientWidth;
       const h = host.clientHeight;
       if (w === 0 || h === 0) return;
-      renderer.setSize(w, h, false);
-      cam.aspect = w / h;
+
+      // Importante: updateStyle = true para que el canvas coincida con el contenedor en móviles
+      renderer.setSize(w, h, true);
+      const aspect = w / h;
+      cam.aspect = aspect;
+
+      // En pantallas estrechas (móvil) alejamos suavemente la cámara para que nada se corte
+      if (aspect < 1) {
+        cam.position.set(0, 0, 11.2);
+      } else if (aspect < 1.3) {
+        cam.position.set(0, 0, 10.4);
+      } else {
+        cam.position.set(0, 0, 9.6);
+      }
+
       cam.updateProjectionMatrix();
       if (reduceMotion) renderer.render(scene, cam);
     };
@@ -147,13 +174,15 @@ export default function Hero3D() {
       mx = (e.clientX / window.innerWidth) * 2 - 1;
       my = (e.clientY / window.innerHeight) * 2 - 1;
     };
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
 
-    // Pausa el render cuando el Hero no está visible en pantalla
     let visible = true;
-    const visObs = new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-    });
+    const visObs = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+      },
+      { threshold: 0.05 },
+    );
     visObs.observe(host);
 
     let animId;
@@ -183,8 +212,8 @@ export default function Hero3D() {
       }
       core.geometry.attributes.position.needsUpdate = true;
 
-      cx += (mx * 0.6 - cx) * 0.05;
-      cy += (my * 0.4 - cy) * 0.05;
+      cx += (mx * 0.5 - cx) * 0.05;
+      cy += (my * 0.35 - cy) * 0.05;
       g.rotation.y = t * 0.12 + cx;
       g.rotation.x = cy;
 
@@ -229,7 +258,7 @@ export default function Hero3D() {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
+      className="relative w-full h-full overflow-hidden pointer-events-none"
     />
   );
 }
