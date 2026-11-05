@@ -1,9 +1,9 @@
 import { BOLIVIA_DEPARTMENTS } from "./boliviaDepartments";
 
 const LABELS = {
-  scz: { x: 1320, y: 1280, name: "Santa Cruz" },
-  cbb: { x: 690, y: 1270, name: "Cochabamba" },
-  oru: { x: 400, y: 1510, name: "Oruro" },
+  scz: { x: 1310, y: 1280, name: "Santa Cruz" },
+  cbb: { x: 740, y: 1330, name: "Cochabamba" },
+  oru: { x: 380, y: 1530, name: "Oruro" },
 };
 
 export default function BoliviaMap({ activeKey, onSelect }) {
@@ -16,7 +16,7 @@ export default function BoliviaMap({ activeKey, onSelect }) {
       viewBox="40 80 1860 2060"
       role="group"
       aria-label="Departamentos de Bolivia"
-      className="w-full h-auto"
+      className="w-full h-auto select-none"
     >
       {BOLIVIA_DEPARTMENTS.map((department) => {
         const host = Boolean(department.key);
@@ -25,7 +25,11 @@ export default function BoliviaMap({ activeKey, onSelect }) {
           <path
             key={department.id}
             d={department.d}
-            className={host ? "bolivia-host cursor-pointer" : undefined}
+            className={
+              host
+                ? "bolivia-host cursor-pointer transition-colors duration-200"
+                : undefined
+            }
             data-active={active ? "true" : undefined}
             fill={active ? "#ffb08a" : host ? "#F25022" : "#2A2A2A"}
             stroke={active ? "#ffffff" : "#111111"}
@@ -54,9 +58,10 @@ export default function BoliviaMap({ activeKey, onSelect }) {
           textAnchor="middle"
           fill="#111111"
           fontFamily="Space Grotesk, sans-serif"
-          fontSize="54"
+          fontSize="48"
           fontWeight="700"
           pointerEvents="none"
+          className="drop-shadow-[0_1px_2px_rgba(255,255,255,0.4)]"
         >
           {label.name}
         </text>
