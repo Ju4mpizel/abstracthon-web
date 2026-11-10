@@ -25,24 +25,24 @@ export default function BitgetPromo() {
   const panelId = useId();
 
   return (
-    <div className="mt-5 rounded-3xl border border-cyan-400/25 bg-[#0f1c20] overflow-hidden">
+    <div className="mt-3 sm:mt-4 rounded-2xl sm:rounded-3xl border border-cyan-400/25 bg-[#0f1c20] overflow-hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={panelId}
-        className="w-full flex items-center gap-4 p-5 sm:p-6 text-left cursor-pointer hover:bg-cyan-400/[0.04] transition-colors"
+        className="w-full flex items-center gap-4 p-4 sm:p-6 text-left cursor-pointer hover:bg-cyan-400/[0.04] transition-colors"
       >
         <img
           src="/img/bitget-wallet.webp"
           alt=""
-          className="w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-xl"
+          className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl"
         />
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-medium tracking-wide text-cyan-300">
+          <p className="text-[11px] sm:text-xs font-medium tracking-wide text-cyan-300">
             Bitget Wallet · Beneficio para participantes
           </p>
-          <p className="mt-1 font-display text-lg sm:text-xl font-semibold text-white text-balance">
+          <p className="mt-1 font-display text-base sm:text-xl font-semibold text-white text-balance leading-snug">
             Gana <span className="text-cyan-300">$5 USD</span> en tu billetera
             con un código exclusivo
           </p>

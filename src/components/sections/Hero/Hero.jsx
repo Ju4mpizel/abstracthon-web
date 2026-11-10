@@ -146,7 +146,7 @@ export default function Hero() {
 
           <a
             {...linkProps(REGISTER_URL)}
-            className="absolute left-2 sm:left-4 bottom-2 sm:bottom-4 lg:-left-6 w-[104px] h-[104px] sm:w-[124px] sm:h-[124px] grid place-items-center rounded-full text-action bg-ink border border-line hover:border-action transition duration-300 z-20 group scale-90 sm:scale-100"
+            className="absolute left-2 sm:left-4 bottom-2 sm:bottom-4 lg:left-2 w-[104px] h-[104px] sm:w-[124px] sm:h-[124px] grid place-items-center rounded-full text-action bg-ink border border-line hover:border-action transition duration-300 z-20 group scale-90 sm:scale-100"
             aria-label="Regístrate ahora"
           >
             <svg

@@ -41,15 +41,6 @@ const TONE_STYLES = {
   },
 };
 
-// Ritmo en zigzag: ancha, angosta, angosta, ancha...
-const SPANS = [
-  "lg:col-span-7",
-  "lg:col-span-5",
-  "lg:col-span-5",
-  "lg:col-span-7",
-];
-const WIDE = "lg:col-span-7";
-
 export default function PrizesSection() {
   const prizes = EVENT_CONFIG.prizes || [];
   const reduce = useReducedMotion();
@@ -72,99 +63,74 @@ export default function PrizesSection() {
     <section
       id="premios"
       aria-labelledby="premios-titulo"
-      className="relative px-4 sm:px-6 py-20 sm:py-28"
+      className="relative px-4 sm:px-6 py-16 sm:py-24"
     >
       <div className="max-w-6xl mx-auto">
         {/* Cabecera alineada a la izquierda */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:gap-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 md:gap-12">
           <h2
             id="premios-titulo"
-            className="max-w-xl font-display font-bold text-white text-4xl sm:text-5xl md:text-6xl leading-[1.05] tracking-tight text-balance"
+            className="max-w-xl font-display font-bold text-white text-3xl sm:text-5xl md:text-6xl leading-[1.05] tracking-tight text-balance"
           >
             Premios y oportunidades para seguir construyendo
           </h2>
-          <p className="max-w-sm text-sm sm:text-base text-copy leading-relaxed">
+          <p className="hidden sm:block max-w-sm text-sm sm:text-base text-copy leading-relaxed">
             Tu proyecto no termina con el evento: capital semilla, mentorías,
             pasantías y formación técnica de la mano de nuestros aliados.
           </p>
         </div>
 
-        {/* Tarjetas */}
+        {/* Tarjetas compactas: 2 columnas en celular, 4 en escritorio */}
         <motion.ul
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, amount: 0.15 }}
-          className="mt-14 sm:mt-16 grid grid-cols-1 lg:grid-cols-12 gap-5"
+          className="mt-10 sm:mt-14 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
         >
-          {prizes.map((prize, idx) => {
+          {prizes.map((prize) => {
             const Icon = ICON_MAP[prize.sponsor] || Gift;
             const tone = TONE_STYLES[prize.tone] || TONE_STYLES.action;
-            const span = SPANS[idx % SPANS.length];
-            const isWide = span === WIDE;
 
             return (
-              <motion.li key={prize.sponsor} variants={item} className={span}>
-                <article className="relative h-full flex flex-col rounded-3xl border border-line bg-surface">
-                  {/* Parte superior: quién da el premio y qué es */}
-                  <div className="p-6 sm:p-8">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <span
-                          className={`w-10 h-10 shrink-0 rounded-xl grid place-items-center ${tone.soft} ${tone.text}`}
-                        >
-                          <Icon className="w-5 h-5" aria-hidden="true" />
-                        </span>
-                        <span className="text-sm font-medium text-copy truncate">
-                          {prize.sponsor}
-                        </span>
-                      </div>
-                      <span
-                        className={`shrink-0 rounded-full border px-3 py-1 text-xs font-medium ${tone.badge}`}
-                      >
-                        {prize.badge}
-                      </span>
-                    </div>
-
-                    <p
-                      className={`mt-10 sm:mt-12 font-display font-bold text-4xl sm:text-5xl leading-[1.05] tracking-tight text-balance ${tone.text}`}
+              <motion.li key={prize.sponsor} variants={item}>
+                <article className="h-full flex flex-col rounded-2xl sm:rounded-3xl border border-line bg-surface p-3.5 sm:p-6">
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={`w-8 h-8 sm:w-10 sm:h-10 shrink-0 rounded-lg sm:rounded-xl grid place-items-center ${tone.soft} ${tone.text}`}
                     >
-                      {prize.highlight}
-                    </p>
-                    <h3 className="mt-3 font-display text-lg sm:text-xl font-semibold text-white">
-                      {prize.title}
-                    </h3>
+                      <Icon className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
+                    </span>
+                    <span
+                      className={`rounded-full border px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-medium truncate ${tone.badge}`}
+                    >
+                      {prize.badge}
+                    </span>
                   </div>
 
-                  {/* Perforación tipo ticket (asume que el fondo de la página es "ink") */}
-                  <div
-                    aria-hidden="true"
-                    className="relative border-t border-dashed border-line"
+                  <p className="mt-3 sm:mt-6 text-[11px] sm:text-sm font-medium text-muted truncate">
+                    {prize.sponsor}
+                  </p>
+                  <p
+                    className={`mt-1 font-display font-bold text-xl sm:text-3xl leading-[1.1] tracking-tight text-balance ${tone.text}`}
                   >
-                    <span className="absolute -left-3 -top-3 w-6 h-6 rounded-full bg-ink" />
-                    <span className="absolute -right-3 -top-3 w-6 h-6 rounded-full bg-ink" />
-                  </div>
+                    {prize.highlight}
+                  </p>
+                  <h3 className="mt-1 text-xs sm:text-base font-semibold text-white leading-snug">
+                    {prize.title}
+                  </h3>
 
-                  {/* Qué incluye */}
-                  <ul
-                    className={`p-6 sm:p-8 grid gap-x-8 gap-y-3 ${
-                      isWide ? "sm:grid-cols-2" : "grid-cols-1"
-                    }`}
-                  >
+                  <ul className="hidden sm:block mt-5 pt-5 border-t border-dashed border-line space-y-2.5">
                     {prize.items.map((text, itemIdx) => (
                       <li
                         key={itemIdx}
-                        className="flex items-start gap-3 text-sm text-copy leading-relaxed"
+                        className="flex items-start gap-2 text-sm text-copy leading-snug"
                       >
-                        <span
-                          className={`mt-0.5 w-5 h-5 shrink-0 rounded-full grid place-items-center ${tone.soft} ${tone.text}`}
-                        >
-                          <Check
-                            className="w-3 h-3"
-                            strokeWidth={3}
-                            aria-hidden="true"
-                          />
-                        </span>
+                        <Check
+                          className={`mt-0.5 w-3.5 h-3.5 shrink-0 ${tone.text}`}
+                          strokeWidth={3}
+                          aria-hidden="true"
+                        />
                         <span>{text}</span>
                       </li>
                     ))}
