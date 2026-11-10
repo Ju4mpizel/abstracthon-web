@@ -6,4 +6,10 @@ export const SPONSORS = [
     name: "MajupLear Academy",
     src: "/img/majup_learn_academy_horizontal_sobre_claro.png",
   },
+  {
+    name: "Bitget Wallet",
+    src: "/img/bitget-wallet.webp",
+    iconOnly: true,
+  },
+  { name: "Conecta2", src: "/img/conecta2.webp" },
 ];

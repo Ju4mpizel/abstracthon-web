@@ -3,7 +3,21 @@ import { SPONSORS } from "../../config/sponsorsData";
 
 function SponsorItem({ sponsor, copyKey }) {
   const isBloom = sponsor.name === "Bloomnovatech";
-  const imgElement = (
+
+  // Logos que son solo un ícono: se muestran como pastilla ícono + nombre
+  const imgElement = sponsor.iconOnly ? (
+    <div className="logo-item logo-item-icon flex items-center gap-2.5">
+      <img
+        src={sponsor.src}
+        alt=""
+        draggable={false}
+        className="h-full w-auto rounded-lg pointer-events-none select-none"
+      />
+      <span className="font-display font-bold text-lg sm:text-xl text-ink whitespace-nowrap">
+        {sponsor.name}
+      </span>
+    </div>
+  ) : (
     <img
       src={sponsor.src}
       alt={sponsor.name}

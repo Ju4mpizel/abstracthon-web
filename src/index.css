@@ -226,3 +226,8 @@ body {
     animation: none;
   }
 }
+
+/* Logos que son solo un ícono (ej. Bitget Wallet): pastilla ícono + nombre */
+.logo-item.logo-item-icon {
+  max-width: none;
+}

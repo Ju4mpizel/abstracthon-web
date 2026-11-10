@@ -1,4 +1,4 @@
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check, HandHeart } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { REGISTER_URL, linkProps } from "../../config/eventData";
 
@@ -140,6 +140,28 @@ export default function RegistrationSection() {
                   </div>
                 ))}
               </dl>
+
+              {/* Transparencia: a dónde va el monto de inscripción */}
+              <div
+                role="note"
+                className="mt-8 flex gap-3 rounded-2xl border border-mark/40 bg-mark/10 p-4"
+              >
+                <span className="w-9 h-9 shrink-0 rounded-xl bg-mark/15 text-mark grid place-items-center">
+                  <HandHeart className="w-5 h-5" aria-hidden="true" />
+                </span>
+                <div>
+                  <p className="font-display font-semibold text-mark">
+                    Todo tu aporte vuelve a ti
+                  </p>
+                  <p className="mt-1 text-sm text-copy leading-relaxed">
+                    El monto de inscripción se destina íntegramente a la{" "}
+                    <strong className="text-white font-semibold">
+                      comida, el merch y los regalitos
+                    </strong>{" "}
+                    que recibirás durante el evento.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Perforación tipo ticket (asume que el fondo de la página es "ink") */}

@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { EVENT_CONFIG } from "../../config/eventData";
+import BitgetPromo from "./BitgetPromo";
 
 const ICON_MAP = {
   Bloomtech: Sparkles,
@@ -173,6 +174,8 @@ export default function PrizesSection() {
             );
           })}
         </motion.ul>
+
+        <BitgetPromo />
 
         {/* Nota aclaratoria */}
         <p className="mt-8 max-w-xl text-xs sm:text-sm text-muted leading-relaxed">
