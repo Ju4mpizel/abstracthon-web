@@ -8,6 +8,7 @@ import Hero from "./components/sections/Hero/Hero";
 import DiagonalBands from "./components/sections/DiagonalBands";
 import Countdown from "./components/sections/Countdown";
 import About from "./components/sections/About";
+import TracksSection from "./components/sections/TracksSection";
 import Gallery from "./components/sections/Gallery";
 import Sedes from "./components/sections/Sedes";
 import PrizesSection from "./components/sections/PrizesSection";
@@ -28,6 +29,7 @@ export default function App() {
         <DiagonalBands />
         <Countdown />
         <About />
+        <TracksSection />
         <Gallery />
         <Sedes />
         <PrizesSection />

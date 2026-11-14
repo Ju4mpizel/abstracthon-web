@@ -5,6 +5,7 @@ import { REGISTER_URL, linkProps } from "../../config/eventData";
 
 const NAV_LINKS = [
   { id: "sobre", label: "Sobre el evento" },
+  { id: "tracks", label: "Tracks" },
   { id: "galeria", label: "Galería" },
   { id: "sedes", label: "Sedes" },
   { id: "premios", label: "Premios" },
